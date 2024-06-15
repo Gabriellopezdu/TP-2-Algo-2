@@ -4,12 +4,20 @@ import java.util.*;
 
 public class TrieCarreras<T> {
 
-    private nodoTrie raiz;
-    private int nodos;
+    private nodoCarreras    raiz;
+    private int             cantidadNodos;
 
-    private class nodoTrie{
-        ArrayList<nodoTrie> hijos;
-
+    private class nodoCarreras{
+        ArrayList<nodoCarreras> hijos;
+        Materia                 materiaDeCarrera;
     }
 
+    public ArrayList<nodoCarreras> nodoCarreras(int espacio){
+        return new ArrayList<>(256);
+    }
+
+    public TrieCarreras(){
+        this.raiz           = new nodoCarreras();
+        this.cantidadNodos  = 0;
+    }
 }
