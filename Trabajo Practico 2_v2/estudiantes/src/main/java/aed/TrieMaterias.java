@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import sun.net.www.protocol.http.spnego.NegotiatorImpl;
 
 public class TrieMaterias{
-    private NodoMaterias raiz;
+    public NodoMaterias raiz;
     private NodoMaterias siguiente;
     private Materias materiasDeCarrera;
 
-    private class NodoMaterias{
+    public class NodoMaterias{
         ArrayList<NodoMaterias> hijosmaterias; // Array que va a tener los hijos que diferencian materias
-        ArrayList<NodoMaterias> valorActual;
+        Character valorActual;
         public NodoMaterias(){ // constructor del nodo 
-            this.valorActual = new ArrayList<NodoMaterias>(256);
+            //agregar un atributo de tipo materia para poder apuntar con el ultimo nodo
             this.hijosmaterias = new ArrayList<NodoMaterias>(256); //le declaramos el array con hijos
         }
 
@@ -44,7 +44,7 @@ public class TrieMaterias{
     public void agregar(String palabra){
         NodoMaterias actual = raiz;
         for (int i = 0; i < palabra.length(); i++) {
-            char caracter   = palabra.charAt(i);
+            char caracter   = palabra.charAt(i); 
             int indice      = (int) caracter;
             
             if (actual.hijosmaterias.get(indice) != null){
@@ -55,15 +55,20 @@ public class TrieMaterias{
                 actual = nuevoNodo;
             }
         }
+        actual.materiasDeCarrera = new Materias(); //tengo que hacer que el ultimo nodo apunte a la instancia de materia que esta haciendo fran  
     }
 
     public void eliminar(String palabra){
         NodoMaterias actual = raiz;
         if (pertenece(palabra)){
-            for (int i = 0; i < palabra.length(); i++){
-                
+            for (int i = 0; i < palabra.length(); i++){ 
+                char caracter   = palabra.charAt(i);    //luego, 
+                int indice      = (int) caracter;
+                while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
+                    actual = actual.hijosmaterias.get(indice);  
+                actual.hijosmaterias = null; //luego, convierte la lista que buscaria el siguiente en null 
+            }
             }
         }
     }
-
 }
