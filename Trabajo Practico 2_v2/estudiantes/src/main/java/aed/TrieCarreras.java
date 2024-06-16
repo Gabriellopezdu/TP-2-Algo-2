@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class TrieCarreras<T> {
 
     private nodoCarreras    raiz;
-    private int cantidadNodos;
+    private int             cantidadNodos;
 
     private class nodoCarreras{
         ArrayList<nodoCarreras> hijos;
-        TrieMaterias            materiasDeCarrera;
+        TrieMaterias            materiasDeCarrera;                              //También indica el fin de la palabra
     }
 
     public ArrayList<nodoCarreras> nodoCarreras(){
@@ -24,7 +24,7 @@ public class TrieCarreras<T> {
     public boolean buscar (String palabra) {
         nodoCarreras nodoActual = raiz;
 
-        for (int i = 0; i < palabra.length(); i++) {                            //recorre la palabra por caracteres
+        for (int i = 0; i < palabra.length(); i++) {                            //Recorre la palabra por caracteres
             char caracter   = palabra.charAt(i);                                //charAT(i) devuelve el char en la posición i
             int indice      = (int) caracter;                                   //(int) char devuelve el código ASCII del char
 
@@ -36,26 +36,34 @@ public class TrieCarreras<T> {
         return nodoActual != null && (nodoActual.materiasDeCarrera != null);    //materiasDeCarrera hace las de fin de palabra
     }
 
-    public void agregar (String palabra) {
+    public void agregar (ParCarreraMateria carreraYMaterias) {
         nodoCarreras nodoActual = raiz;
+        String nombreCarrera = getCarrera();
 
-        for (int i = 0; i < palabra.length(); i++) {
+        for (int i = 0; i < nombreCarrera.length(); i++) {            //Recorre igual que "buscar"
             char caracter   = palabra.charAt(i);
             int indice      = (int) caracter;               
             
-            if (nodoActual.hijos.get(indice) != null){
+            if (nodoActual.hijos.get(indice) != null){          //Si la letra ya está definida, continua por ahí
                 nodoActual = nodoActual.hijos.get(indice);
             }else{
-                nodoCarreras nuevoNodo  = new nodoCarreras();
+                nodoCarreras nuevoNodo  = new nodoCarreras();   //Si no está definida, la define
                 nodoActual.hijos.set(indice, nuevoNodo);
                 nodoActual              = nuevoNodo;
+                cantidadNodos++;
             }
         }
-        if (nodoActual.materiasDeCarrera == null){
-            TrieMaterias nuevoTrie = new TrieMaterias();
+        if (nodoActual.materiasDeCarrera == null){         //Si termina la palabra y no hay un
+            TrieMaterias nuevoTrie = new TrieMaterias();   //trieMaterias asociado, lo genera
             nodoActual.materiasDeCarrera = nuevoTrie;
+            //¿Tendría que añadir a nuevoTrie las materias de la carrera?
+        }else{
+            return;
         }
-         
+    }
+
+    public int tamañoTrie(){
+        return cantidadNodos;
     }
 }
 
