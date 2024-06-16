@@ -57,14 +57,12 @@ public class TrieCarreras<T> {
         }
         if (nodoActual.materiasDeCarrera == null){          //Si termina la palabra y no hay un
             TrieMaterias nuevoTrie = new TrieMaterias();    //trieMaterias asociado, lo genera
+            //nuevaMateria = carreraYMaterias.getMateria();
+            //nuevoTrie.agregar(nuevaMateria)
             nodoActual.materiasDeCarrera = nuevoTrie;       //Podría completar el trie con las materias
         }else{
             return;
         }
-    }
-
-    public void eliminar(String carrera){
-        
     }
 
     public int tamañoTrie(){

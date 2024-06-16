@@ -19,7 +19,6 @@ public class TrieAlumnos {
         }
     }
 
-
     public TrieAlumnos(){
         this.cantidadNodos = 0;
         this.raiz = new nodoAlumnos();
@@ -40,7 +39,7 @@ public class TrieAlumnos {
         return (nodoActual != null && (nodoActual.fin != false));
     }
 
-    public void agregar(String palabra){
+    public void agregar(String palabra){    //inscribir?
         nodoAlumnos actual = raiz;
         for (int i = 0; i < palabra.length(); i++) {
             char caracter   = palabra.charAt(i); 
@@ -55,8 +54,18 @@ public class TrieAlumnos {
                 cantidadNodos++;
             }
         }
+        actual.cantidadMateriasInscripto++;
         actual.fin = true;
     }
+
+    public void desinscribir(String alumno){
+        nodoAlumnos actual = raiz;
+            for (int i = 0; i < alumno.length(); i++) {
+                char caracter   = alumno.charAt(i); 
+                int indice      = (int) caracter;
+            }
+            actual.cantidadMateriasInscripto--;
+        }
 
     public int tamañoTrie(){
         return cantidadNodos;
