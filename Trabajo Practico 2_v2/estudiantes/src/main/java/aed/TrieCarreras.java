@@ -36,11 +36,13 @@ public class TrieCarreras<T> {
         return nodoActual != null && (nodoActual.materiasDeCarrera != null);    //materiasDeCarrera hace las de fin de palabra
     }
 
-    public void agregar (ParCarreraMateria carreraYMaterias) {
+    public void agregar (String palabra) {  //(ParCarreraMateria carreraYMaterias)
         nodoCarreras nodoActual = raiz;
-        String nombreCarrera = getCarrera();
+//        String nombreCarrera = carreraYMaterias.getCarrera();
 
-        for (int i = 0; i < nombreCarrera.length(); i++) {            //Recorre igual que "buscar"
+//        for (int i = 0; i < nombreCarrera.length(); i++) {      //Toma el nombre de la carrera, y recorre igual que "buscar"
+        for (int i = 0; i < palabra.length(); i++){
+            //char caracter   = nombreCarrera.charAt(i);
             char caracter   = palabra.charAt(i);
             int indice      = (int) caracter;               
             
@@ -53,10 +55,9 @@ public class TrieCarreras<T> {
                 cantidadNodos++;
             }
         }
-        if (nodoActual.materiasDeCarrera == null){         //Si termina la palabra y no hay un
-            TrieMaterias nuevoTrie = new TrieMaterias();   //trieMaterias asociado, lo genera
-            nodoActual.materiasDeCarrera = nuevoTrie;
-            //¿Tendría que añadir a nuevoTrie las materias de la carrera?
+        if (nodoActual.materiasDeCarrera == null){          //Si termina la palabra y no hay un
+            TrieMaterias nuevoTrie = new TrieMaterias();    //trieMaterias asociado, lo genera
+            nodoActual.materiasDeCarrera = nuevoTrie;       //Podría completar el trie con las materias
         }else{
             return;
         }
