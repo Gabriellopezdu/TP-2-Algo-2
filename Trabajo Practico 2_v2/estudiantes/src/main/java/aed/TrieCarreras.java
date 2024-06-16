@@ -9,11 +9,11 @@ public class TrieCarreras<T> {
 
     private class nodoCarreras{
         ArrayList<nodoCarreras> hijos;
-        TrieMaterias            materiasDeCarrera;                              //También indica el fin de la palabra
-    }
-
-    public ArrayList<nodoCarreras> nodoCarreras(){
-        return new ArrayList<>(256);
+        TrieMaterias            materiasDeCarrera;  //También indica el fin de la palabra si es distinto de null
+    
+        public nodoCarreras(){
+            this.hijos  =new ArrayList<nodoCarreras> (256);
+        }
     }
 
     public TrieCarreras(){
@@ -61,6 +61,10 @@ public class TrieCarreras<T> {
         }else{
             return;
         }
+    }
+
+    public void eliminar(String carrera){
+        
     }
 
     public int tamañoTrie(){

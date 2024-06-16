@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import sun.net.www.protocol.http.spnego.NegotiatorImpl;
 
 public class TrieMaterias{
-    public NodoMaterias raiz;
+    private NodoMaterias raiz;
     private NodoMaterias siguiente;
     private Materias materiasDeCarrera;
 
-    public class NodoMaterias{
+    private class NodoMaterias{
         ArrayList<NodoMaterias> hijosmaterias; // Array que va a tener los hijos que diferencian materias
         Character valorActual;
         public NodoMaterias(){ // constructor del nodo 
