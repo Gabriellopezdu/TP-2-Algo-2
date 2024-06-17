@@ -23,6 +23,12 @@
       <version>5.9.2</version>
       <scope>test</scope>
     </dependency>
+  
+    <dependency>
+      <groupId>com.github.michedev</groupId>
+      <artifactId>nostream</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

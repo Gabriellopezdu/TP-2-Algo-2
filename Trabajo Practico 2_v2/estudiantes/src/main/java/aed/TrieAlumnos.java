@@ -10,7 +10,7 @@ public class TrieAlumnos {
     private class nodoAlumnos{
         private ArrayList<nodoAlumnos>  hijos;
         private boolean                 fin;
-        private int                     cantidadMateriasInscripto;
+        public int                     cantidadMateriasInscripto;
 
         public nodoAlumnos(){
             this.hijos                      = new ArrayList<nodoAlumnos> (256);

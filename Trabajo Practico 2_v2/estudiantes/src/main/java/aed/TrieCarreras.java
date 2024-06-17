@@ -7,12 +7,12 @@ public class TrieCarreras<T> {
     private nodoCarreras    raiz;
     private int             cantidadNodos;
 
-    private class nodoCarreras{
+    public class nodoCarreras{
         ArrayList<nodoCarreras> hijos;
         TrieMaterias            materiasDeCarrera;  //También indica el fin de la palabra si es distinto de null
     
         public nodoCarreras(){
-            this.hijos  =new ArrayList<nodoCarreras> (256);
+            this.hijos  =  new ArrayList<nodoCarreras> (256);
         }
     }
 
@@ -21,7 +21,7 @@ public class TrieCarreras<T> {
         this.cantidadNodos  = 0;
     }
 
-    public boolean buscar (String palabra) {
+    public boolean pertenece (String palabra) {
         nodoCarreras nodoActual = raiz;
 
         for (int i = 0; i < palabra.length(); i++) {                            //Recorre la palabra por caracteres
@@ -36,13 +36,10 @@ public class TrieCarreras<T> {
         return nodoActual != null && (nodoActual.materiasDeCarrera != null);    //materiasDeCarrera hace las de fin de palabra
     }
 
-    public void agregar (String palabra) {  //(ParCarreraMateria carreraYMaterias)
+    public void agregar (String palabra) {
         nodoCarreras nodoActual = raiz;
-//        String nombreCarrera = carreraYMaterias.getCarrera();
 
-//        for (int i = 0; i < nombreCarrera.length(); i++) {      //Toma el nombre de la carrera, y recorre igual que "buscar"
         for (int i = 0; i < palabra.length(); i++){
-            //char caracter   = nombreCarrera.charAt(i);
             char caracter   = palabra.charAt(i);
             int indice      = (int) caracter;               
             
@@ -55,13 +52,9 @@ public class TrieCarreras<T> {
                 cantidadNodos++;
             }
         }
-        if (nodoActual.materiasDeCarrera == null){          //Si termina la palabra y no hay un
-            TrieMaterias nuevoTrie = new TrieMaterias();    //trieMaterias asociado, lo genera
-            //nuevaMateria = carreraYMaterias.getMateria();
-            //nuevoTrie.agregar(nuevaMateria)
-            nodoActual.materiasDeCarrera = nuevoTrie;       //Podría completar el trie con las materias
-        }else{
-            return;
+        if (nodoActual.materiasDeCarrera == null){              //Si termina la palabra y no hay un
+            TrieMaterias nuevoTrie = new TrieMaterias();        //trieMaterias asociado, lo genera
+            nodoActual.materiasDeCarrera = nuevoTrie;
         }
     }
 
