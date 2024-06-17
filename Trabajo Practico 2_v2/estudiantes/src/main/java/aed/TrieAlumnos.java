@@ -60,12 +60,18 @@ public class TrieAlumnos {
 
     public void desinscribir(String alumno){
         nodoAlumnos actual = raiz;
-            for (int i = 0; i < alumno.length(); i++) {
-                char caracter   = alumno.charAt(i); 
-                int indice      = (int) caracter;
+        for (int i = 0; i < alumno.length(); i++) {
+            char caracter   = alumno.charAt(i);
+            int indice      = (int) caracter;
+
+            if(actual.hijos.get(indice) == null){
+                return;
             }
-            actual.cantidadMateriasInscripto--;
+
+        actual = actual.hijos.get(indice);
         }
+        actual.cantidadMateriasInscripto--;
+    }
 
     public int tamañoTrie(){
         return cantidadNodos;
