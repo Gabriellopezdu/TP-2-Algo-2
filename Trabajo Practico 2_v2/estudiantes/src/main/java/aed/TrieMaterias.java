@@ -98,7 +98,26 @@ public class TrieMaterias{
     }
 
     public class iteradorLexiDeMaterias{
-        private NodoMaterias actual;
+        private NodoMaterias _actual;
+
+        public iteradorLexiDeMaterias(){
+            NodoMaterias _actual;
+        }
+
+        public boolean haySiguiente(){
+            return (_actual.hijosmaterias!= null);
+        }
+
+        public Character siguiente(){
+            Character adevolver = _actual.valorActual;
+            int i = 0;
+            while (i < 256 && _actual.hijosmaterias.get(i) == null){
+                //  if(_actual.hijosmaterias.get(i) != null){
+                     _actual = _actual.hijosmaterias.get(i) ;
+                //  }
+            }
+            return adevolver; 
+        }
 
         // public ArrayList<String> Inorder(NodoMaterias RaizdetrieActual){
         //     String palabra = "";

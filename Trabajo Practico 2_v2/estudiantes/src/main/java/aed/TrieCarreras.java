@@ -2,6 +2,8 @@ package aed;
 
 import java.util.ArrayList;
 
+import aed.TrieMaterias.NodoMaterias;
+
 public class TrieCarreras<T> {
 
     private nodoCarreras    raiz;
@@ -9,6 +11,7 @@ public class TrieCarreras<T> {
 
     public class nodoCarreras{
         ArrayList<nodoCarreras> hijos;
+        Character valorActual;
         TrieMaterias            materiasDeCarrera;  //También indica el fin de la palabra si es distinto de null
     
         public nodoCarreras(){
@@ -58,8 +61,32 @@ public class TrieCarreras<T> {
         }
     }
 
+     public class iteradorLexiDeCarreras{
+        private nodoCarreras _actual;
+
+        public iteradorLexiDeCarreras(){
+            nodoCarreras _actual;
+        }
+
+        public boolean haySiguiente(){
+            return (_actual.hijos!= null);
+        }
+
+        public Character siguiente(){
+            Character adevolver = _actual.valorActual;
+            int i = 0;
+            while (i < 256 && _actual.hijos.get(i) == null){
+                //  if(_actual.hijosmaterias.get(i) != null){
+                     _actual = _actual.hijos.get(i) ;
+                //  }
+            }
+            return adevolver; 
+        }
+
+
     public int tamañoTrie(){
         return cantidadNodos;
     }
+   }
 }
 
