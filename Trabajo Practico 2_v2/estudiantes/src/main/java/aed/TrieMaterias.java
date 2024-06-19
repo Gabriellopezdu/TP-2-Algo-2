@@ -1,6 +1,9 @@
 package aed;
 
 import java.util.ArrayList;
+import aed.TrieCarreras.*;
+import aed.ListaEnlazada.*;
+import aed.Tupla.*;
 
 public class TrieMaterias{
     public NodoMaterias raiz;
@@ -36,7 +39,7 @@ public class TrieMaterias{
     }
 
 
-    public void agregar(String palabra){
+    public void agregar(String palabra, Materia NuevaMateria){ // la llamamos ya con la instancia de materia del siu 
         NodoMaterias actual = raiz;
         for (int i = 0; i < palabra.length(); i++) {
             char caracter   = palabra.charAt(i); 
@@ -50,19 +53,66 @@ public class TrieMaterias{
                 actual = nuevoNodo;
             }
         } 
-        // nuevaMateria va a ser la que va a apuntar 
-        actual.instanciademateria = NuevaMateria; // el ultimo nodo apunta a 
+        // nuevaMateria va a ser la que va a apuntar creada en el siu 
+        actual.instanciademateria = NuevaMateria; 
     }
 
     public void eliminar(String palabra){
-        NodoMaterias actual = raiz;
+        NodoMaterias actual = raiz;     
             for (int i = 0; i < palabra.length(); i++){ 
-                char caracter   = palabra.charAt(i);    //luego, 
+                char caracter   = palabra.charAt(i);    
                 int indice      = (int) caracter;
                 while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
                     actual = actual.hijosmaterias.get(indice);  
-                actual.hijosmaterias = null; //luego, convierte la lista que buscaria el siguiente en null 
+                  //actualiza para tener la instancia de carrera
+                }
             }
-        }
+            Materia materiaActual = actual.instanciademateria;
+            actual.instanciademateria = null;
+            // ListaEnlazada<Tupla<nodoCarreras, String>> conjABorrar = materiaActual.infoMateria;
+            // nodo actual1 = conjABorrar.primero();}
+            // nodoCarreras primerValor = actual1.t1();
+         //   Tupla<nodoCarreras,String> conlaInfo = new Tupla(actual1.valor.t1(),actual1.valor.t2());
+            // while (actual1.siguiente != null) { 
+            //     if (actual1.valor.t2() != palabra) {
+            //         nodoCarreras aBorrar = actual1.t1();
+            //         NodoMaterias del = buscarUltimo(aBorrar.materiasDeCarrera,actual1.t2());
+            //         del.instanciademateria = null; 
+            //     }
+            //     actual1 = actual1.siguiente;
+            // }
     }
+
+    //aca recibe el trie de carreras que le pasa trieCarreras y el nombre de la materia que va a buscar
+    public NodoMaterias buscarUltimo(TrieMaterias trieDeCarrera, String palabra){
+        NodoMaterias actual = trieDeCarrera.raiz;     
+            for (int i = 0; i < palabra.length(); i++){ 
+                char caracter   = palabra.charAt(i);    
+                int indice      = (int) caracter;
+                while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
+                    actual = actual.hijosmaterias.get(indice);  
+                  //actualiza para tener la instancia de carrera
+                }
+            }
+        return actual;
+    }
+
+    public class iteradorLexiDeMaterias{
+        private NodoMaterias actual;
+
+        // public ArrayList<String> Inorder(NodoMaterias RaizdetrieActual){
+        //     String palabra = "";
+        //     ArrayList<String> res = new ArrayList<>();
+        //     for(int i = 0;i < 256;i++){
+        //         if(RaizdetrieActual.hijosmaterias.get(i) != null){
+        //             Character char = RaizdetrieActual.hijosmaterias.get(i);
+        //             palabra.concat(char);
+
+        //         }
+        //         // 
+
+        //     }
+            
+        // } 
+    }    
 }

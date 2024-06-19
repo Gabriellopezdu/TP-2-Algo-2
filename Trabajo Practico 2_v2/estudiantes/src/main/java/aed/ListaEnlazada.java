@@ -2,11 +2,11 @@ package aed;
 
 public class ListaEnlazada<T> {
 
-    private nodo primerNodo;
-    private nodo ultimoNodo;
-    private int tamaño;
+    public nodo primerNodo;
+    public nodo ultimoNodo;
+    public int tamaño;
 
-    private class nodo{
+    public class nodo{
         T       valor;
         nodo    siguiente;
     }
@@ -19,6 +19,10 @@ public class ListaEnlazada<T> {
 
     public int longitud(){
         return this.tamaño;
+    }
+
+    public nodo primero(){
+        return this.primerNodo;
     }
 
     public void agregarAdelante(T elemento){
