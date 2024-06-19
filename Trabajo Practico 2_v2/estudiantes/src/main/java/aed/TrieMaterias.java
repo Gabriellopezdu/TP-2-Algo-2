@@ -84,8 +84,8 @@ public class TrieMaterias{
     }
 
     //aca recibe el trie de carreras que le pasa trieCarreras y el nombre de la materia que va a buscar
-    public NodoMaterias buscarUltimo(TrieMaterias trieDeCarrera, String palabra){
-        NodoMaterias actual = trieDeCarrera.raiz;     
+    public NodoMaterias buscarUltimo(TrieMaterias trieDeLaCarrera, String palabra){
+        NodoMaterias actual = trieDeLaCarrera.raiz;     
             for (int i = 0; i < palabra.length(); i++){ 
                 char caracter   = palabra.charAt(i);    
                 int indice      = (int) caracter;

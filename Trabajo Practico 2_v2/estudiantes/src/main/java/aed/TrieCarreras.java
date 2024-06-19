@@ -60,6 +60,19 @@ public class TrieCarreras<T> {
             nodoActual.materiasDeCarrera = nuevoTrie;
         }
     }
+    //recibe el string a buscar y el trie de carreras 
+    public nodoCarreras buscarUltimo(TrieCarreras trieDeCarrera, String palabra){
+        nodoCarreras actual = trieDeCarrera.raiz;     
+            for (int i = 0; i < palabra.length(); i++){ 
+                char caracter   = palabra.charAt(i);    
+                int indice      = (int) caracter;
+                while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
+                    actual = actual.hijos.get(indice);  
+                  //actualiza para tener la instancia de carrera
+                }
+            }
+        return actual;
+    }
 
      public class iteradorLexiDeCarreras{
         private nodoCarreras _actual;

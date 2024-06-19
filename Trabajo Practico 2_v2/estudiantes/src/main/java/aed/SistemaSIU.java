@@ -1,5 +1,7 @@
 package aed;
 
+import aed.TrieCarreras.nodoCarreras;
+
 public class SistemaSIU {
 
     enum CargoDocente{
@@ -10,7 +12,25 @@ public class SistemaSIU {
     }
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        TrieCarreras trieNuevo = new TrieCarreras(); //creamos el trieDeCarreras nuevo
+        TrieAlumnos triedeAlumnos = new TrieAlumnos(); //creamos el trieDeAlumnos nuevo
+        for(int i = 0; i < infoMaterias.length; i++){
+            Materia NuevaMateria = new Materia(); //la materia a la que van a apuntar las hojas del TrieMaterias
+            for(int k = 0; k < libretasUniversitarias.length;k++ ){ //aca cargamos las Lu
+                String palabra = libretasUniversitarias[k];
+                NuevaMateria.agregarAlumno(palabra); 
+            }  
+            ParCarreraMateria[] materiaActual = infoMaterias[i].getParesCarreraMateria(); //no estoy seguro de esto de [i] pero no me deja accederlo con get(i)
+            for(int j = 0; j < materiaActual.length;j++){ // aca vamos a cargar la materia y carreras
+                String nombreCarrera = materiaActual[j].getCarrera() ;
+                String nombreMateria = materiaActual[j].getNombreMateria();
+                if(!trieNuevo.pertenece(nombreCarrera)){ // chequea si la carrera esta, si no la agrego 
+                    trieNuevo.agregar(nombreCarrera);
+                }
+                nodoCarreras primerElem = trieNuevo.buscarUltimo(trieNuevo, nombreCarrera); // consigo la hoja de la carrera 
+                NuevaMateria.agregarCarMat(primerElem, nombreMateria); 
+            }
+        }	    
     }
     /*Cuando generamos el sistemaSiu, por cada infoMateria que entre:
     1)Generamos un objeto de clase Materia, llamado "nuevaMateria"
