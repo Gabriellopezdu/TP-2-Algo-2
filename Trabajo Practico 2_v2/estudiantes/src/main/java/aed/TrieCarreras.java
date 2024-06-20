@@ -2,9 +2,7 @@ package aed;
 
 import java.util.ArrayList;
 
-import aed.TrieMaterias.NodoMaterias;
-
-public class TrieCarreras<T> {
+public class TrieCarreras {
 
     private nodoCarreras    raiz;
     private int             cantidadNodos;
@@ -16,6 +14,9 @@ public class TrieCarreras<T> {
     
         public nodoCarreras(){
             this.hijos  =  new ArrayList<nodoCarreras> (256);
+            for(int i = 0; i<256; i++){
+                hijos.set(i, null);
+            }
         }
     }
 
@@ -67,7 +68,7 @@ public class TrieCarreras<T> {
                 char caracter   = palabra.charAt(i);    
                 int indice      = (int) caracter;
                 while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
-                    actual = actual.hijos.get(indice);  
+                    actual = actual.hijos.get(indice);
                   //actualiza para tener la instancia de carrera
                 }
             }
@@ -84,7 +85,7 @@ public class TrieCarreras<T> {
         public boolean haySiguiente(){
             return (_actual.hijos!= null);
         }
-
+    
         public Character siguiente(){
             Character adevolver = _actual.valorActual;
             int i = 0;

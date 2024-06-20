@@ -3,8 +3,12 @@ package aed;
 import aed.TrieCarreras.nodoCarreras;
 import aed.ListaEnlazada.*;
 import aed.TrieMaterias.*;
+import java.util.*;
 
 public class SistemaSIU {
+
+    private TrieCarreras    trieDeCarreras;
+    private TrieAlumnos     trieAlumnos;
 
     enum CargoDocente{
         AY2,
@@ -14,70 +18,62 @@ public class SistemaSIU {
     }
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
-        TrieCarreras trieNuevo = new TrieCarreras(); //creamos el trieDeCarreras nuevo
-        TrieAlumnos triedeAlumnos = new TrieAlumnos(); //creamos el trieDeAlumnos nuevo
+        this.trieDeCarreras = new TrieCarreras(); //creamos el trieDeCarreras nuevo
+        this.trieAlumnos = new TrieAlumnos(); //creamos el trieDeAlumnos nuevo
         for(int i = 0; i < infoMaterias.length; i++){
             Materia NuevaMateria = new Materia(); //la materia a la que van a apuntar las hojas del TrieMaterias
             for(int k = 0; k < libretasUniversitarias.length;k++ ){ //aca cargamos las Lu
                 String palabra = libretasUniversitarias[k];
-                NuevaMateria.agregarAlumno(palabra); 
-            }  
-            ParCarreraMateria[] materiaActual = infoMaterias[i].getParesCarreraMateria(); //no estoy seguro de esto de [i] pero no me deja accederlo con get(i)
+                NuevaMateria.agregarAlumno(palabra);
+                this.trieAlumnos.agregar(libretasUniversitarias[i]);
+            } 
+            ParCarreraMateria[] materiaActual = infoMaterias[i].getParesCarreraMateria();
             for(int j = 0; j < materiaActual.length;j++){ // aca vamos a cargar la materia y carreras
                 String nombreCarrera = materiaActual[j].getCarrera() ;
                 String nombreMateria = materiaActual[j].getNombreMateria();
-                if(!trieNuevo.pertenece(nombreCarrera)){ // chequea si la carrera esta, si no la agrego 
-                    trieNuevo.agregar(nombreCarrera);
+                if(!trieDeCarreras.pertenece(nombreCarrera)){ // chequea si la carrera esta, si no la agrego 
+                    trieDeCarreras.agregar(nombreCarrera);
                 }
-                nodoCarreras primerElem = trieNuevo.buscarUltimo(trieNuevo, nombreCarrera); // consigo la hoja de la carrera 
-                NuevaMateria.agregarCarMat(primerElem, nombreMateria); 
+                nodoCarreras primerElem = trieDeCarreras.buscarUltimo(trieDeCarreras, nombreCarrera); // consigo la hoja de la carrera 
+                NuevaMateria.agregarCarMat(primerElem, nombreMateria);
             }
-        }	    
+        }
     }
-    /*Cuando generamos el sistemaSiu, por cada infoMateria que entre:
-    1)Generamos un objeto de clase Materia, llamado "nuevaMateria"
-        2)Hacemos un ciclo que recorra los elementos(Duplas <String carrera, String materia>) de infoMateria,
-            creando los tries correspondientes
-            3)Por cada nuevo nombre que reciba la materia, hacemos que el último nodo del trieMateria de 
-                esa carrera apunte a nuevaMateria
-            4)Por cada carrera de trieCarrera, hay que incluir el último nodo de la carrera al objeto materias
-                en el atributo infoMateria
-        5)Pasamos al siguiente infoMateria y repite
-    */
-   
+    
     public void inscribir(String estudiante, String carrera, String materia){
-        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
         objetoDeMateria.agregarAlumno(estudiante);
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        if(AY1 == cargo){
+        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        if(CargoDocente.AY1 == cargo){
             objetoDeMateria.agregarAy1();
         }
-        else if (AY2 == cargo) {
+        else if (CargoDocente.AY2 == cargo) {
             objetoDeMateria.agregarAy2();
         }    
-        else if(cargo == JTP){
+        else if(cargo == CargoDocente.JTP){
             objetoDeMateria.agregarJTP();
-        } else{
+        } 
+        else if (cargo == CargoDocente.PROF){
             objetoDeMateria.agregarProfe();
         }
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        return objetoDeMateria.profes;	    
+        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        return objetoDeMateria.profes();
     }
 
     public void cerrarMateria(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+       /* TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
         trieDelaMActual.eliminar(materia);
-        nodo actual = objetoDeMateria.infoMateria.primero(); /*aca falta ver bien el tipo q declaramos*/
+        nodo actual = objetoDeMateria.infoMateria.primero(); 
         while(actual.siguiente != null){
             if(actual.valor.t2() != palabra){
                 nodoCarreras aBorrar = actual.t1();
@@ -85,18 +81,19 @@ public class SistemaSIU {
                 del.instanciademateria = null; 
             }
             actual = actual.siguiente;
-        }
+        }*/
+    return;
     }
 
     public int inscriptos(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
         return objetoDeMateria.inscriptos().tamaño;    
     }
 
     public boolean excedeCupo(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
         return objetoDeMateria.cupo() >= objetoDeMateria.inscriptos().tamaño;	    
     }
 
@@ -109,7 +106,7 @@ public class SistemaSIU {
     }
 
     public int materiasInscriptas(String estudiante){
-        return this.TrieAlumnos.buscarAlumno(estudiante).cantMateriasInscripto ; // hay que implementar buscarAlumno en el trieAlumnos	    
+        return this.trieAlumnos.buscarUltimo(this.trieAlumnos,estudiante).cantidadMateriasInscripto ; // hay que implementar buscarAlumno en el trieAlumnos	    
     }
     
 }

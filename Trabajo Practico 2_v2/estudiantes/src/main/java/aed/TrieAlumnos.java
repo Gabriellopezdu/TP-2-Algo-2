@@ -16,6 +16,10 @@ public class TrieAlumnos {
             this.hijos                      = new ArrayList<nodoAlumnos> (256);
             this.fin                        = false;
             this.cantidadMateriasInscripto  = 0;
+
+            for (int i = 0; i < 256; i++) {
+                hijos.set(i, null);
+            }
         }
 
         public int cantMateriasInscriptas(){

@@ -1,9 +1,6 @@
 package aed;
 
 import java.util.ArrayList;
-import aed.TrieCarreras.*;
-import aed.ListaEnlazada.*;
-import aed.Tupla.*;
 
 public class TrieMaterias{
     public NodoMaterias raiz;
@@ -15,6 +12,9 @@ public class TrieMaterias{
 
         public NodoMaterias(){ // constructor del nodo 
             this.hijosmaterias = new ArrayList<NodoMaterias>(256); //le declaramos el array con hijos
+            for(int i = 0; i <256; i++){
+                hijosmaterias.set(i,null);
+            }
         }
 
     }
@@ -127,7 +127,6 @@ public class TrieMaterias{
         //         if(RaizdetrieActual.hijosmaterias.get(i) != null){
         //             Character char = RaizdetrieActual.hijosmaterias.get(i);
         //             palabra.concat(char);
-
         //         }
         //         // 
 
