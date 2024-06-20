@@ -118,6 +118,7 @@ public class TrieMaterias{
             }
             return adevolver; 
         }
+        /*aca si bien no es lo mas eficiente ya que va a ser una constante grande (256 iteraciones de operaciones O(1)) sigue siendo eficiente contra el nombre de carrera que va a ser algo lineal y potencialmente mucho mas largo*/
 
         // public ArrayList<String> Inorder(NodoMaterias RaizdetrieActual){
         //     String palabra = "";

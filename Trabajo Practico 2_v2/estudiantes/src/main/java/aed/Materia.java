@@ -5,7 +5,7 @@ import aed.TrieCarreras.*;
 
 public class Materia {
 
-    private ListaEnlazada<Tupla<nodoCarreras, String>> infoMateria; // lista enlazada de tuplas tipo (puntero carrera,
+    public ListaEnlazada<Tupla<nodoCarreras, String>> infoMateria; // lista enlazada de tuplas tipo (puntero carrera,
                                                                     // nombreMateria)
 
     private ArrayList<Integer> profes; // lista de cantidad de profes (Profe, jtp, Ay1, Ay2) y cant alumnos es (250,
@@ -41,6 +41,14 @@ public class Materia {
 
     public void agregarAy2() {
         profes.set(3, profes.get(3) + 1);
+    }
+
+    public ArrayList<Integer> profes(){
+        return this.profes;
+    }
+
+    public ListaEnlazada<String> inscriptos(){
+        return this.inscriptos;
     }
 
     public void agregarCarMat(nodoCarreras ultimoNodoCarrera, String nombreMateria) {

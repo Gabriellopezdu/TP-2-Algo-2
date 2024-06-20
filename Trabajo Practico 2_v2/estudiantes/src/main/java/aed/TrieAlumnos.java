@@ -17,6 +17,10 @@ public class TrieAlumnos {
             this.fin                        = false;
             this.cantidadMateriasInscripto  = 0;
         }
+
+        public int cantMateriasInscriptas(){
+            return this.cantidadMateriasInscripto; 
+        }
     }
 
     public TrieAlumnos(){
@@ -24,7 +28,7 @@ public class TrieAlumnos {
         this.raiz = new nodoAlumnos();
     }
 
-    public boolean buscar (String palabra) {
+    public boolean pertenece (String palabra) {
         nodoAlumnos nodoActual = raiz;
 
         for (int i = 0; i < palabra.length(); i++) {

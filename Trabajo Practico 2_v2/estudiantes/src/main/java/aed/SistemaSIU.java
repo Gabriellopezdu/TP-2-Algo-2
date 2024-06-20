@@ -1,6 +1,8 @@
 package aed;
 
 import aed.TrieCarreras.nodoCarreras;
+import aed.ListaEnlazada.*;
+import aed.TrieMaterias.*;
 
 public class SistemaSIU {
 
@@ -44,27 +46,58 @@ public class SistemaSIU {
     */
    
     public void inscribir(String estudiante, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        objetoDeMateria.agregarAlumno(estudiante);
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        if(AY1 == cargo){
+            objetoDeMateria.agregarAy1();
+        }
+        else if (AY2 == cargo) {
+            objetoDeMateria.agregarAy2();
+        }    
+        else if(cargo == JTP){
+            objetoDeMateria.agregarJTP();
+        } else{
+            objetoDeMateria.agregarProfe();
+        }
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        return objetoDeMateria.profes;	    
     }
 
     public void cerrarMateria(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        trieDelaMActual.eliminar(materia);
+        nodo actual = objetoDeMateria.infoMateria.primero(); /*aca falta ver bien el tipo q declaramos*/
+        while(actual.siguiente != null){
+            if(actual.valor.t2() != palabra){
+                nodoCarreras aBorrar = actual.t1();
+                NodoMaterias del = buscarUltimo(aBorrar.materiasDeCarrera,actual1.t2());
+                del.instanciademateria = null; 
+            }
+            actual = actual.siguiente;
+        }
     }
 
     public int inscriptos(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        return objetoDeMateria.inscriptos().tamaño;    
     }
 
     public boolean excedeCupo(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        TrieMaterias trieDelaMActual = this.trieCarreras.buscarUltimo(this.TrieCarreras,carrera).materiasDeCarrera;
+        Materia objetoDeMateria = trieDeLaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
+        return objetoDeMateria.cupo() >= objetoDeMateria.inscriptos().tamaño;	    
     }
 
     public String[] carreras(){
@@ -76,6 +109,7 @@ public class SistemaSIU {
     }
 
     public int materiasInscriptas(String estudiante){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        return this.TrieAlumnos.buscarAlumno(estudiante).cantMateriasInscripto ; // hay que implementar buscarAlumno en el trieAlumnos	    
     }
+    
 }
