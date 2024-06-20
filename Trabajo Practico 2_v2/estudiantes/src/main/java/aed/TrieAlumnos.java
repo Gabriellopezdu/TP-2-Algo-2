@@ -7,10 +7,10 @@ public class TrieAlumnos {
     private nodoAlumnos raiz;
     private int         cantidadNodos;
 
-    private class nodoAlumnos{
+    public class nodoAlumnos{
         private ArrayList<nodoAlumnos>  hijos;
         private boolean                 fin;
-        public int                     cantidadMateriasInscripto;
+        public int                      cantidadMateriasInscripto;
 
         public nodoAlumnos(){
             this.hijos                      = new ArrayList<nodoAlumnos> (256);
@@ -43,7 +43,7 @@ public class TrieAlumnos {
         return (nodoActual != null && (nodoActual.fin != false));
     }
 
-    public void agregar(String palabra){    //inscribir?
+    public void agregar(String palabra){        //inscribir a la facu
         nodoAlumnos actual = raiz;
         for (int i = 0; i < palabra.length(); i++) {
             char caracter   = palabra.charAt(i); 
@@ -58,24 +58,34 @@ public class TrieAlumnos {
                 cantidadNodos++;
             }
         }
-        actual.cantidadMateriasInscripto++;
         actual.fin = true;
     }
 
+    public void inscribir(String palabra){      //inscribir a materias
+        nodoAlumnos alumno = buscarUltimo(this,palabra);
+        alumno.cantidadMateriasInscripto++;
+
+    }
+
     public void desinscribir(String alumno){
-        nodoAlumnos actual = raiz;
-        for (int i = 0; i < alumno.length(); i++) {
-            char caracter   = alumno.charAt(i);
-            int indice      = (int) caracter;
-
-            if(actual.hijos.get(indice) == null){
-                return;
-            }
-
-        actual = actual.hijos.get(indice);
-        }
+        nodoAlumnos actual = buscarUltimo(this,alumno);
         actual.cantidadMateriasInscripto--;
     }
+
+    public nodoAlumnos buscarUltimo (TrieAlumnos trieAlumnos, String palabra){
+        nodoAlumnos actual = this.raiz;     
+            for (int i = 0; i < palabra.length(); i++){ 
+                char caracter   = palabra.charAt(i);    
+                int indice      = (int) caracter;
+                while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
+                    actual = actual.hijos.get(indice);  
+                  //actualiza para tener la instancia de carrera
+                }
+            }
+        return actual;
+    }
+
+
 
     public int tamañoTrie(){
         return cantidadNodos;
