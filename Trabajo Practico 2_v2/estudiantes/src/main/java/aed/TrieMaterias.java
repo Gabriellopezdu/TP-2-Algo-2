@@ -1,137 +1,147 @@
 package aed;
 
-import java.util.ArrayList;
+public class TrieMaterias {
 
-public class TrieMaterias{
-    public NodoMaterias raiz;
+    private nodoMaterias raiz;
+    private int cantidadNodos;
 
-    public class NodoMaterias{
-        ArrayList<NodoMaterias> hijosmaterias; // Array que va a tener los hijos que diferencian materias
+    // El invariante de representación de la clase nodoMaterias es que no existe
+    // nodo tal que el atributo hijos sea null,
+    // y el atributo fin sea false simultaneamente.
+
+    public class nodoMaterias {
+        nodoMaterias[] hijos;
         Character valorActual;
-        Materia instanciademateria;
+        Boolean fin;
+        Materia materia;
 
-        public NodoMaterias(){ // constructor del nodo 
-            this.hijosmaterias = new ArrayList<NodoMaterias>(256); //le declaramos el array con hijos
-            for(int i = 0; i <256; i++){
-                hijosmaterias.set(i,null);
-            }
+        public nodoMaterias() {
+            this.hijos = new nodoMaterias[256];
+            fin = null;
+        }
+    }
+
+    public TrieMaterias() {
+        this.raiz = new nodoMaterias();
+        this.cantidadNodos = 0;
+    }
+
+    public boolean pertenece(String palabra) {
+
+        if (palabra == null || palabra.length() == 0) {
+            return false;
         }
 
-    }
-    // Constructor del trie
-    public TrieMaterias(){
-        this.raiz = new NodoMaterias();
-    }
-    
-    //nos fijamos si existe la palabra 
-    public boolean pertenece (String palabra) {
-        NodoMaterias actual = raiz; //accedemos a la raiz del trie
-        for (int i = 0; i < palabra.length(); i++) { // 
-            char caracter   = palabra.charAt(i);
-            int indice = (int) caracter;
-            
-            if(actual.hijosmaterias.get(indice) == null){
-                return false;
+        nodoMaterias nodoActual = raiz;
+
+        for (int i = 0; i < palabra.length(); i++) { // Recorre la palabra por caracteres
+            char caracter = palabra.charAt(i); // charAT(i) devuelve el char en la posición i
+            int indice = (int) caracter; // (int) char devuelve el código ASCII del char
+
+            if (nodoActual.hijos[indice] == null) { // get(indice) devuelve el hijo en la posición indice
+                return false; // si el array en el indice es null, la letra no existe
             }
-            actual = actual.hijosmaterias.get(indice);
-        }
-        return actual != null && (actual.instanciademateria != null);// vemos que el ultimo nodo no sea null y apunte a una intancia de materia
+            nodoActual = nodoActual.hijos[indice]; // caso contrario, nodo actual pasa a ser el nodo en
+        } // la posición "indice" del array (la siguiente letra)
+        return nodoActual != null && (nodoActual.materia != null);
+        // materiasDeCarrera hace las de fin de palabra
     }
 
+    public void agregar(String palabra) {
+        nodoMaterias nodoActual = raiz;
 
-    public void agregar(String palabra, Materia NuevaMateria){ // la llamamos ya con la instancia de materia del siu 
-        NodoMaterias actual = raiz;
         for (int i = 0; i < palabra.length(); i++) {
-            char caracter   = palabra.charAt(i); 
-            int indice      = (int) caracter;
-            
-            if (actual.hijosmaterias.get(indice) != null){
-                actual = actual.hijosmaterias.get(indice);
-            }else{
-                NodoMaterias nuevoNodo  = new NodoMaterias();
-                actual.hijosmaterias.set(indice, nuevoNodo);
-                actual = nuevoNodo;
+            char caracter = palabra.charAt(i);
+            int indice = (int) caracter;
+
+            if (nodoActual.hijos[indice] != null) { // Si la letra ya está definida, continua por ahí
+                nodoActual = nodoActual.hijos[indice];
+            } else {
+                nodoMaterias nuevoNodo = new nodoMaterias(); // Si no está definida, la define
+                nodoActual.hijos[indice] = nuevoNodo;
+                nodoActual = nuevoNodo;
+                cantidadNodos++;
             }
-        } 
-        // nuevaMateria va a ser la que va a apuntar creada en el siu 
-        actual.instanciademateria = NuevaMateria; 
+        }
+
+        nodoActual.fin = true;
+    }
+
+    // recibe el string a buscar y el trie de Materias
+    public nodoMaterias buscarMateria(String palabra) {
+
+        nodoMaterias nodoActual = raiz;
+
+        for (int i = 0; i < palabra.length(); i++) {
+            char caracter = palabra.charAt(i);
+            int indice = (int) caracter;
+
+            if (nodoActual.hijos[indice] != null) {
+                nodoActual = nodoActual.hijos[indice];
+            }
+        }
+        return nodoActual;
     }
 
     public void eliminar(String palabra){
-        NodoMaterias actual = raiz;     
-            for (int i = 0; i < palabra.length(); i++){ 
-                char caracter   = palabra.charAt(i);    
-                int indice      = (int) caracter;
-                while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
-                    actual = actual.hijosmaterias.get(indice);  
-                  //actualiza para tener la instancia de carrera
-                }
-            }
-            Materia materiaActual = actual.instanciademateria;
-            actual.instanciademateria = null;
-            // ListaEnlazada<Tupla<nodoCarreras, String>> conjABorrar = materiaActual.infoMateria;
-            // nodo actual1 = conjABorrar.primero();}
-            // nodoCarreras primerValor = actual1.t1();
-         //   Tupla<nodoCarreras,String> conlaInfo = new Tupla(actual1.valor.t1(),actual1.valor.t2());
-            // while (actual1.siguiente != null) { 
-            //     if (actual1.valor.t2() != palabra) {
-            //         nodoCarreras aBorrar = actual1.t1();
-            //         NodoMaterias del = buscarUltimo(aBorrar.materiasDeCarrera,actual1.t2());
-            //         del.instanciademateria = null; 
-            //     }
-            //     actual1 = actual1.siguiente;
-            // }
+        
+        nodoMaterias actual = this.buscarMateria(palabra);
+        // nodoMaterias actual = raiz;     
+        //     for (int i = 0; i < palabra.length(); i++){ 
+        //         char caracter   = palabra.charAt(i);    
+        //         int indice      = (int) caracter;
+        //         while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
+        //             actual = actual.hijos[indice];  
+        //           //actualiza para tener la instancia de carrera
+        //         }
+        //     }
+            Materia ladeAhora = actual.materia;
+            actual.materia = null;
     }
 
-    //aca recibe el trie de carreras que le pasa trieCarreras y el nombre de la materia que va a buscar
-    public NodoMaterias buscarUltimo(TrieMaterias trieDeLaCarrera, String palabra){
-        NodoMaterias actual = trieDeLaCarrera.raiz;     
-            for (int i = 0; i < palabra.length(); i++){ 
-                char caracter   = palabra.charAt(i);    
-                int indice      = (int) caracter;
-                while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
-                    actual = actual.hijosmaterias.get(indice);  
-                  //actualiza para tener la instancia de carrera
-                }
-            }
-        return actual;
+    public int tamañoTrie() {
+        return cantidadNodos;
     }
 
-    public class iteradorLexiDeMaterias{
-        private NodoMaterias _actual;
+    public class iteradorLexiDeMaterias {
+        private nodoMaterias _actual;
 
-        public iteradorLexiDeMaterias(){
-            NodoMaterias _actual;
+        public iteradorLexiDeMaterias() {
+            nodoMaterias _actual;
         }
 
-        public boolean haySiguiente(){
-            return (_actual.hijosmaterias!= null);
+        public boolean haySiguiente() {
+            return (_actual.hijos != null);
         }
 
-        public Character siguiente(){
+        public Character siguiente() {
             Character adevolver = _actual.valorActual;
             int i = 0;
-            while (i < 256 && _actual.hijosmaterias.get(i) == null){
-                //  if(_actual.hijosmaterias.get(i) != null){
-                     _actual = _actual.hijosmaterias.get(i) ;
-                //  }
+            while (i < 256 && _actual.hijos[i] == null) {
+                // if(_actual.hijosmaterias.get(i) != null){
+                _actual = _actual.hijos[i];
+                // }
             }
-            return adevolver; 
+            return adevolver;
         }
-        /*aca si bien no es lo mas eficiente ya que va a ser una constante grande (256 iteraciones de operaciones O(1)) sigue siendo eficiente contra el nombre de carrera que va a ser algo lineal y potencialmente mucho mas largo*/
+        /*
+         * aca, si bien no es lo mas eficiente, ya que va a ser una constante grande (256
+         * iteraciones de operaciones O(1)), sigue siendo eficiente contra el nombre de
+         * carrera que va a ser algo lineal, y potencialmente mucho mas largo.
+         */
 
         // public ArrayList<String> Inorder(NodoMaterias RaizdetrieActual){
-        //     String palabra = "";
-        //     ArrayList<String> res = new ArrayList<>();
-        //     for(int i = 0;i < 256;i++){
-        //         if(RaizdetrieActual.hijosmaterias.get(i) != null){
-        //             Character char = RaizdetrieActual.hijosmaterias.get(i);
-        //             palabra.concat(char);
-        //         }
-        //         // 
+        // String palabra = "";
+        // ArrayList<String> res = new ArrayList<>();
+        // for(int i = 0;i < 256;i++){
+        // if(RaizdetrieActual.hijosmaterias.get(i) != null){
+        // Character char = RaizdetrieActual.hijosmaterias.get(i);
+        // palabra.concat(char);
+        // }
+        // //
 
-        //     }
-            
-        // } 
-    }    
+        // }
+
+        // }
+    }
 }

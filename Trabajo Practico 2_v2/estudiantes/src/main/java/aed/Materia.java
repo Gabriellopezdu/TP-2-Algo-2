@@ -1,22 +1,21 @@
 package aed;
 
-import java.util.ArrayList;
 import aed.TrieCarreras.*;
 
 public class Materia {
 
-    public ListaEnlazada<Tupla<nodoCarreras, String>> infoMateria; // lista enlazada de tuplas tipo (puntero carrera,
+    public ListaEnlazada<Tupla> infoMateria; // lista enlazada de tuplas tipo (puntero carrera,
                                                                     // nombreMateria)
 
     private int[] profes; // lista de cantidad de profes (Profe, jtp, Ay1, Ay2) y cant alumnos es (250,
-                                       // 100, 20, 30)
+                          // 100, 20, 30)
 
     private ListaEnlazada<String> inscriptos; // lista enlazada con las LU (esto lo hacemos para facilitar el metodo
                                               // borrar materia)
 
     public Materia() {
 
-        ListaEnlazada<Tupla<nodoCarreras, String>> nombres = new ListaEnlazada();
+        ListaEnlazada<Tupla> nombres = new ListaEnlazada();
 
         infoMateria = nombres;
 
@@ -43,11 +42,11 @@ public class Materia {
         profes[3]++;
     }
 
-    public int[] profes(){
+    public int[] profes() {
         return this.profes;
     }
 
-    public ListaEnlazada<String> inscriptos(){
+    public ListaEnlazada<String> inscriptos() {
         return this.inscriptos;
     }
 

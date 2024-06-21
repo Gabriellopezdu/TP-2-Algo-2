@@ -1,112 +1,190 @@
 package aed;
 
+import aed.Tupla.*;
 import aed.TrieCarreras.nodoCarreras;
 import aed.ListaEnlazada.*;
 import aed.TrieMaterias.*;
-import java.util.*;
 
 public class SistemaSIU {
 
-    private TrieCarreras    trieDeCarreras;
-    private TrieAlumnos     trieAlumnos;
+    private TrieCarreras trieDeCarreras;
+    private TrieAlumnos trieAlumnos;
 
-    enum CargoDocente{
+    enum CargoDocente {
         AY2,
         AY1,
         JTP,
         PROF
     }
 
-    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
-        this.trieDeCarreras = new TrieCarreras(); //creamos el trieDeCarreras nuevo
-        this.trieAlumnos = new TrieAlumnos(); //creamos el trieDeAlumnos nuevo
-        for(int i = 0; i < infoMaterias.length; i++){
-            Materia NuevaMateria = new Materia(); //la materia a la que van a apuntar las hojas del TrieMaterias
-            for(int k = 0; k < libretasUniversitarias.length;k++ ){ //aca cargamos las Lu
-                String palabra = libretasUniversitarias[k];
-                NuevaMateria.agregarAlumno(palabra);
-                this.trieAlumnos.agregar(libretasUniversitarias[i]);
-            } 
-            ParCarreraMateria[] materiaActual = infoMaterias[i].getParesCarreraMateria();
-            for(int j = 0; j < materiaActual.length;j++){ // aca vamos a cargar la materia y carreras
-                String nombreCarrera = materiaActual[j].getCarrera() ;
-                String nombreMateria = materiaActual[j].getNombreMateria();
-                if(!trieDeCarreras.pertenece(nombreCarrera)){ // chequea si la carrera esta, si no la agrego 
-                    trieDeCarreras.agregar(nombreCarrera);
+    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias) {
+
+        trieDeCarreras = new TrieCarreras(); // creamos los tries vacios
+        trieAlumnos = new TrieAlumnos();
+
+        for (int i = 0; i < infoMaterias.length; i++) { // iteramos sobre cada infoMateria (osea entre cada materia
+                                                        // general)
+
+            Materia nuevaMateria = new Materia(); // creamos el objeto materia para el aliasing
+
+            for (int j = 0; j < infoMaterias[i].getParesCarreraMateria().length; j++) { // iteramos sobre cada (carrera,
+                                                                                        // materia) de una misma materia
+                                                                                        // general
+                String nombreCarrera = infoMaterias[i].getParesCarreraMateria()[j].getCarrera(); // accedemos al
+                                                                                                 // nombreCarrera
+                String nombreMateria = infoMaterias[i].getParesCarreraMateria()[j].getNombreMateria(); // accedemos al
+                                                                                                       // nombreMateria
+
+                trieDeCarreras.agregar(nombreCarrera); // enchufamos la carrera
+                nodoCarreras ultNodoCarreras = trieDeCarreras.buscarCarrera(nombreCarrera); // guardamos el ultimo nodo
+                                                                                            // de la carrera
+
+                if (ultNodoCarreras.materiasDeCarrera != null) { // le enchufamos la materia al trieMaterias de la
+                                                                 // carrera
+                    ultNodoCarreras.materiasDeCarrera.agregar(nombreMateria);
+                } else {
+                    ultNodoCarreras.materiasDeCarrera = new TrieMaterias(); // o creamos el trieMaterias y luego
+                                                                            // enchufamos la materia
+                    ultNodoCarreras.materiasDeCarrera.agregar(nombreMateria);
                 }
-                nodoCarreras primerElem = trieDeCarreras.buscarUltimo(trieDeCarreras, nombreCarrera); // consigo la hoja de la carrera 
-                NuevaMateria.agregarCarMat(primerElem, nombreMateria);
+
+                nuevaMateria.agregarCarMat(ultNodoCarreras, nombreMateria); // agregamos la mausquerramienta misteriosa
+                                                                            // que nos servira para mas adelante
+                                                                            // al obj materia le metemos un puntero al
+                                                                            // ultimo nodo de carrera y el nombreMateria
+
+                nodoMaterias ultNodoMateria = ultNodoCarreras.materiasDeCarrera.buscarMateria(nombreMateria);
+                ultNodoMateria.materia = nuevaMateria; // apuntamos el ultimo nodo de la materia al onjeto materia
             }
         }
-    }
-    
-    public void inscribir(String estudiante, String carrera, String materia){
-        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        objetoDeMateria.agregarAlumno(estudiante);
+
+        for (int k = 0; k < libretasUniversitarias.length; k++) { // enchufamos en el trieAlumnos a todas las LU
+            trieAlumnos.agregar(libretasUniversitarias[k]);
+        }
     }
 
-    public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        if(CargoDocente.AY1 == cargo){
-            objetoDeMateria.agregarAy1();
+    /*
+     * COMPLEJIDAD:
+     * Crear los tries vacíos es O(1) (generar el nodo raíz)
+     * 
+     */
+
+    public void inscribir(String estudiante, String carrera, String materia) {
+
+        nodoCarreras nodoCarreras = trieDeCarreras.buscarCarrera(carrera);
+
+        nodoMaterias nodoMateria = nodoCarreras.materiasDeCarrera.buscarMateria(materia);
+
+        nodoMateria.materia.agregarAlumno(estudiante);
+
+        trieAlumnos.inscribir(estudiante);
+    }
+
+    public void agregarDocente(CargoDocente cargo, String carrera, String materia) {
+
+        nodoCarreras nodoCarreras = trieDeCarreras.buscarCarrera(carrera);
+        nodoMaterias nodoMateria = nodoCarreras.materiasDeCarrera.buscarMateria(materia);
+        if (CargoDocente.AY1 == cargo) {
+            nodoMateria.materia.agregarAy1();
+        } else if (CargoDocente.PROF == cargo) {
+            nodoMateria.materia.agregarProfe();
         }
+
         else if (CargoDocente.AY2 == cargo) {
-            objetoDeMateria.agregarAy2();
-        }    
-        else if(cargo == CargoDocente.JTP){
-            objetoDeMateria.agregarJTP();
-        } 
-        else if (cargo == CargoDocente.PROF){
-            objetoDeMateria.agregarProfe();
+            nodoMateria.materia.agregarAy2();
+        } else if (CargoDocente.JTP == cargo) {
+            nodoMateria.materia.agregarJTP();
         }
     }
 
-    public int[] plantelDocente(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        return objetoDeMateria.profes();
+    public int[] plantelDocente(String materia, String carrera) {
+
+        return trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(materia).materia.profes();
+
+        // recorremos el nombre de la carrera y el de la materia, luego solamente
+        // devolvemos un atributo del objeto materia
+        // O(largo de carrera + largo de materia)
     }
 
-    public void cerrarMateria(String materia, String carrera){
-       /* TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        trieDelaMActual.eliminar(materia);
-        nodo actual = objetoDeMateria.infoMateria.primero(); 
-        while(actual.siguiente != null){
-            if(actual.valor.t2() != palabra){
-                nodoCarreras aBorrar = actual.t1();
-                NodoMaterias del = buscarUltimo(aBorrar.materiasDeCarrera,actual1.t2());
-                del.instanciademateria = null; 
+    public void cerrarMateria(String materia, String carrera) {
+
+        nodoCarreras ultNodoCarreras = trieDeCarreras.buscarCarrera(carrera); // buscamos la materia en el trieCarreras
+
+        nodoMaterias ultNodoMateria = ultNodoCarreras.materiasDeCarrera.buscarMateria(materia); // buscamos el objeto de
+                                                                                                // materia en el
+                                                                                                // trieMaterias
+
+        Materia materiaABorrar = ultNodoMateria.materia;
+
+        ListaEnlazada<Tupla>.nodo carMat = materiaABorrar.infoMateria.primerNodo;
+
+        for (int i = 0; i < materiaABorrar.infoMateria.longitud() - 1; i++) {
+            carMat.valor.t1().materiasDeCarrera.eliminar(carMat.valor.t2());
+            carMat = carMat.siguiente;
+        }
+
+        ListaEnlazada<String>.nodo nodoAlumno = materiaABorrar.inscriptos().primerNodo;
+
+        for (int j = 0; j < materiaABorrar.inscriptos().longitud() - 1; j++) {
+            trieAlumnos.buscarAlumno(nodoAlumno.valor).cantidadMateriasInscripto--;
+            nodoAlumno = nodoAlumno.siguiente;
+        }
+
+        // TrieMaterias trieDeMateriaActual =
+        // this.trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera;// seteamos el
+        // // trie para
+        // // usarlo
+        // Materia objetoDeMateria = trieDeMateriaActual.buscarMateria(materia).materia;
+        // // seteamos el objeto materia
+        // nodoT actual = objetoDeMateria.infoMateria.primeroT(); // consultamos el
+        // primer nodo de la lista con los nombres
+        // // de la materia
+
+        // while (actual.siguiente != null) {
+        // if (actual.valor.t2() != palabra) {
+        // nodoCarreras aBorrar = actual.t1();
+        // nodoMaterias del = buscarUltimo(aBorrar.materiasDeCarrera, actual.t2());
+        // del.instanciademateria = null;
+        // }
+        // actual = actual.siguiente;
+        // }
+        // return;
+    }
+
+    public int inscriptos(String materia, String carrera) {
+
+        return trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(materia).materia
+                .inscriptos().tamaño;
+
+        // recorremos el nombre de la carrera y el de la materia, luego preguntamos el
+        // tamano de la lista enlazada que es un atributo de lista enlazada
+        // O(largo de carrera + largo de materia)
+    }
+
+    public boolean excedeCupo(String materia, String carrera) {
+        Materia laMateria = trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(materia).materia;
+        int cupo = laMateria.cupo();
+        int inscriptos = laMateria.inscriptos().longitud();
+        return (inscriptos > cupo);
+    }
+
+    public String[] carreras() {
+        String[] res[];
+        for (int i = 0; i < 256;i++)
+            while (trieDeCarreras.iterador().haySiguiente() != false){
+                
             }
-            actual = actual.siguiente;
-        }*/
-    return;
+            
+        res.
+            
     }
 
-    public int inscriptos(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        return objetoDeMateria.inscriptos().tamaño;    
+    public String[] materias(String carrera) {
+        throw new UnsupportedOperationException("Método no implementado aún");
     }
 
-    public boolean excedeCupo(String materia, String carrera){
-        TrieMaterias trieDelaMActual = this.trieDeCarreras.buscarUltimo(this.trieDeCarreras,carrera).materiasDeCarrera;
-        Materia objetoDeMateria = trieDelaMActual.buscarUltimo(trieDelaMActual, materia).instanciademateria;
-        return objetoDeMateria.cupo() >= objetoDeMateria.inscriptos().tamaño;	    
+    public int materiasInscriptas(String estudiante) {
+        return trieAlumnos.buscarAlumno(estudiante).cantidadMateriasInscripto;
     }
 
-    public String[] carreras(){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
-    }
-
-    public String[] materias(String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
-    }
-
-    public int materiasInscriptas(String estudiante){
-        return this.trieAlumnos.buscarUltimo(this.trieAlumnos,estudiante).cantidadMateriasInscripto ; // hay que implementar buscarAlumno en el trieAlumnos	    
-    }
-    
 }
