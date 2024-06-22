@@ -16,13 +16,15 @@ public class TrieMaterias {
         Materia materia;
 
         public nodoMaterias() {
-            this.hijos = new nodoMaterias[256];
-            fin = null;
+            this.hijos = new nodoMaterias[256];     // creamos el arreglo de 256 posiciones 
+            fin = null;     
+            // ambas operaciones son O(1), ya que solo son asignaciones
+            // y siempre se ejecutaran solo esas 2.
         }
     }
 
     public TrieMaterias() {
-        this.raiz = new nodoMaterias();
+        this.raiz = new nodoMaterias(); 
         this.cantidadNodos = 0;
     }
 
@@ -47,7 +49,7 @@ public class TrieMaterias {
         // materiasDeCarrera hace las de fin de palabra
     }
 
-    public void agregar(String palabra) {
+    public nodoMaterias agregar(String palabra) {
         nodoMaterias nodoActual = raiz;
 
         for (int i = 0; i < palabra.length(); i++) {
@@ -65,6 +67,8 @@ public class TrieMaterias {
         }
 
         nodoActual.fin = true;
+
+        return nodoActual;
     }
 
     // recibe el string a buscar y el trie de Materias

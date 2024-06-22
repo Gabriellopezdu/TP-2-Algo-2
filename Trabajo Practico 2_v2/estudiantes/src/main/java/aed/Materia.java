@@ -61,6 +61,6 @@ public class Materia {
     }
 
     public int cupo() {
-        return profes[0] * 250 + profes[1] * 100 + profes[2] * 20 + profes[4] * 30;
+        return profes[0] * 250 + profes[1] * 100 + profes[2] * 20 + profes[3] * 30;
     }
 }

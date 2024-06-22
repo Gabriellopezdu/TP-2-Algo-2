@@ -46,7 +46,7 @@ public class TrieCarreras {
         // materiasDeCarrera hace las de fin de palabra
     }
 
-    public void agregar(String palabra) {
+    public nodoCarreras agregar(String palabra) {
         nodoCarreras nodoActual = raiz;
 
         for (int i = 0; i < palabra.length(); i++) {
@@ -66,6 +66,8 @@ public class TrieCarreras {
                                                     // genera un nuevo trie de materias vacío
             nodoActual.materiasDeCarrera = new TrieMaterias();
         }
+
+        return nodoActual;
     }
 
     // recibe el string a buscar y el trie de carreras

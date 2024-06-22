@@ -19,48 +19,63 @@ public class SistemaSIU {
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias) {
 
-        trieDeCarreras = new TrieCarreras(); // creamos los tries vacios
-        trieAlumnos = new TrieAlumnos();
+        trieDeCarreras = new TrieCarreras(); // creamos los tries vacios 
+        trieAlumnos = new TrieAlumnos(); 
+        // ambos son O(1) pues esos metodos son O(1) y siempre se ejecutan  
+        // sin importar la entrada
 
         for (int i = 0; i < infoMaterias.length; i++) { // iteramos sobre cada infoMateria (osea entre cada materia
                                                         // general)
+        // esta operacion es una sumatoria desde i=1 hasta el largo de infoMaterias
 
             Materia nuevaMateria = new Materia(); // creamos el objeto materia para el aliasing
+            // O(1) nuevamente, solo es asignacion 
 
             for (int j = 0; j < infoMaterias[i].getParesCarreraMateria().length; j++) { // iteramos sobre cada (carrera,
                                                                                         // materia) de una misma materia
                                                                                         // general
+            // sumatoria desde j=1 hasta el largo de la lista paresCarreraMateria
+
                 String nombreCarrera = infoMaterias[i].getParesCarreraMateria()[j].getCarrera(); // accedemos al
                                                                                                  // nombreCarrera
+                // esta complejidad es O(1) solo accedemos a la posicion de un array
+
                 String nombreMateria = infoMaterias[i].getParesCarreraMateria()[j].getNombreMateria(); // accedemos al
                                                                                                        // nombreMateria
+                // esta complejidad es O(1) solo accedemos a la posicion de un array
+                           
 
-                trieDeCarreras.agregar(nombreCarrera); // enchufamos la carrera
-                nodoCarreras ultNodoCarreras = trieDeCarreras.buscarCarrera(nombreCarrera); // guardamos el ultimo nodo
-                                                                                            // de la carrera
+                nodoCarreras ultNodoCarreras = trieDeCarreras.agregar(nombreCarrera); // enchufamos la carrera y guardamos el ultimo nodo
+                // O(largo carrera)
 
-                if (ultNodoCarreras.materiasDeCarrera != null) { // le enchufamos la materia al trieMaterias de la
-                                                                 // carrera
-                    ultNodoCarreras.materiasDeCarrera.agregar(nombreMateria);
-                } else {
-                    ultNodoCarreras.materiasDeCarrera = new TrieMaterias(); // o creamos el trieMaterias y luego
-                                                                            // enchufamos la materia
-                    ultNodoCarreras.materiasDeCarrera.agregar(nombreMateria);
-                }
+                if (ultNodoCarreras.materiasDeCarrera == null) {
+                    ultNodoCarreras.materiasDeCarrera = new TrieMaterias(); // si no lo tiene creamos el trieMaterias
+                    // O(1)
+                }                                                           
+                
+                nodoMaterias ultNodoMateria = ultNodoCarreras.materiasDeCarrera.agregar(nombreMateria);
+                // agregar es O(nombre materia) y la asignacion es O(1)
 
                 nuevaMateria.agregarCarMat(ultNodoCarreras, nombreMateria); // agregamos la mausquerramienta misteriosa
                                                                             // que nos servira para mas adelante
                                                                             // al obj materia le metemos un puntero al
                                                                             // ultimo nodo de carrera y el nombreMateria
+                // O(1) pues es agregarAtras a una lista enlazada 
 
-                nodoMaterias ultNodoMateria = ultNodoCarreras.materiasDeCarrera.buscarMateria(nombreMateria);
-                ultNodoMateria.materia = nuevaMateria; // apuntamos el ultimo nodo de la materia al onjeto materia
+                ultNodoMateria.materia = nuevaMateria; // apuntamos el ultimo nodo de la materia al objeto materia
             }
         }
 
         for (int k = 0; k < libretasUniversitarias.length; k++) { // enchufamos en el trieAlumnos a todas las LU
             trieAlumnos.agregar(libretasUniversitarias[k]);
         }
+        // esto sera O(cantidad de estudiantes), pues al ser acotadas las LU
+        // todas las operaciones son O(1), y quedaria sumatoria{desde (k=1 hasta cantidad de LU) de O(1)}  
+
+        /* finalmente nos quedaria sumatoria{(desde i=1 hasta el largo de infoMaterias) 
+                                   de sumatoria{(j=1 hasta el largo de la lista paresCarreraMateria) de 
+                                   O(largo carrera) + O(largo materia)}} + 
+                                   sumatoria{(desde k=1 hasta cantidad de LU) de O(1)   } */
     }
 
     /*
