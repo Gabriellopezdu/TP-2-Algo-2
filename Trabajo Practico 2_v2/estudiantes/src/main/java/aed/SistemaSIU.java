@@ -177,26 +177,27 @@ public class SistemaSIU {
     public boolean excedeCupo(String nombreMateria, String carrera) {
         Materia mat = trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(nombreMateria).materia;
         int cantProfes =  mat.profes()[0];
-        int cantJtps = mat.profes()[2];
-        int cantAY1 = mat.profes()[1];
+        int cantJtps = mat.profes()[1];
+        int cantAY1 = mat.profes()[2];
         int cantAY2 = mat.profes()[3];
         int tamañoDeInscriptos = mat.inscriptos.longitud();
-        if ((cantAY2*30) <= tamañoDeInscriptos){
-            return false;
+        
+        if ((cantAY2*30) < tamañoDeInscriptos){
+            return true;
         }
 
-        if(cantAY1*20 <= mat.inscriptos.tamaño){ 
-            return false;
+        if(cantAY1*20 < mat.inscriptos.tamaño){ 
+            return true;
         }
         
-        if(cantJtps*100 <= mat.inscriptos.tamaño){ 
-            return false;
+        if(cantJtps*100 < mat.inscriptos.tamaño){ 
+            return true;
         }
 
-        if(cantProfes*250 <= mat.inscriptos.tamaño){ 
-            return false;
+        if(cantProfes*250 < mat.inscriptos.tamaño){ 
+            return true;
         }
-        return true;
+        return false;
     }
     
     // public String[] carreras() {
