@@ -1,9 +1,7 @@
 package aed;
 
-import aed.Tupla.*;
 import aed.TrieCarreras.nodoCarreras;
-import aed.ListaEnlazada.*;
-import aed.TrieMaterias.*;
+import aed.TrieMaterias.nodoMaterias;
 
 public class SistemaSIU {
 
@@ -176,27 +174,45 @@ public class SistemaSIU {
         // O(largo de carrera + largo de materia)
     }
 
-    public boolean excedeCupo(String materia, String carrera) {
-        Materia laMateria = trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(materia).materia;
-        int cupo = laMateria.cupo();
-        int inscriptos = laMateria.inscriptos().longitud();
-        return (inscriptos > cupo);
-    }
+    public boolean excedeCupo(String nombreMateria, String carrera) {
+        Materia mat = trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(nombreMateria).materia;
+        int cantProfes =  mat.profes()[0];
+        int cantJtps = mat.profes()[2];
+        int cantAY1 = mat.profes()[1];
+        int cantAY2 = mat.profes()[3];
+        int tamañoDeInscriptos = mat.inscriptos.longitud();
+        if ((cantAY2*30) <= tamañoDeInscriptos){
+            return false;
+        }
 
-    public String[] carreras() {
-        String[] res[];
-        for (int i = 0; i < 256;i++)
-            while (trieDeCarreras.iterador().haySiguiente() != false){
+        if(cantAY1*20 <= mat.inscriptos.tamaño){ 
+            return false;
+        }
+        
+        if(cantJtps*100 <= mat.inscriptos.tamaño){ 
+            return false;
+        }
+
+        if(cantProfes*250 <= mat.inscriptos.tamaño){ 
+            return false;
+        }
+        return true;
+    }
+    
+    // public String[] carreras() {
+    //     String[] res[];
+    //     for (int i = 0; i < 256;i++)
+    //         while (trieDeCarreras.iterador().haySiguiente() != false){
                 
-            }
+    //         }
             
-        res.
+    //     res.
             
-    }
+    // }
 
-    public String[] materias(String carrera) {
-        throw new UnsupportedOperationException("Método no implementado aún");
-    }
+    // public String[] materias(String carrera) {
+    //     throw new UnsupportedOperationException("Método no implementado aún");
+    // }
 
     public int materiasInscriptas(String estudiante) {
         return trieAlumnos.buscarAlumno(estudiante).cantidadMateriasInscripto;

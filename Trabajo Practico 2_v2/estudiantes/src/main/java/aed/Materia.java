@@ -10,7 +10,7 @@ public class Materia {
     private int[] profes; // lista de cantidad de profes (Profe, jtp, Ay1, Ay2) y cant alumnos es (250,
                           // 100, 20, 30)
 
-    private ListaEnlazada<String> inscriptos; // lista enlazada con las LU (esto lo hacemos para facilitar el metodo
+    public ListaEnlazada<String> inscriptos; // lista enlazada con las LU (esto lo hacemos para facilitar el metodo
                                               // borrar materia)
 
     public Materia() {
