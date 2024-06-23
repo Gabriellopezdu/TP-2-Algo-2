@@ -1,13 +1,26 @@
 package aed;
 
+// El inv. de representacion de la clase TrieMaterias es que tendra un nodoMaterias raiz en el cual
+// no tendra valor de Character definido, luego respeta que los nodos que conforman el trie cumplen
+// el inv. de representacion de la clase nodoMaterias. Luego no habra dos(o mas) formas distintas de 
+// recorrer el trie para obtener la misma palabra. 
+// 
+
 public class TrieMaterias {
 
     private nodoMaterias raiz;
     private int cantidadNodos;
+    public int cantMaterias = 0;
 
-    // El invariante de representación de la clase nodoMaterias es que no existe
-    // nodo tal que el atributo hijos sea null,
-    // y el atributo fin sea false simultaneamente.
+    // El inv. de representación de la clase nodoMaterias es que, si no es la raiz
+    // el valor del
+    // nodo sera un Character y tendra como atributo un Array de 256 nodoMaterias en
+    // las que, si no es
+    // null tendra su valor predefinido en el Ascii. Luego, si estamos en el nodo
+    // que representa el fin
+    // de la palabra este tendra el atributo fin en true y el atributo materia
+    // distinto de null
+    // apuntando a la instancia de materia que representa.
 
     public class nodoMaterias {
         nodoMaterias[] hijos;
@@ -16,15 +29,15 @@ public class TrieMaterias {
         Materia materia;
 
         public nodoMaterias() {
-            this.hijos = new nodoMaterias[256];     // creamos el arreglo de 256 posiciones 
-            fin = null;     
+            this.hijos = new nodoMaterias[256]; // creamos el arreglo de 256 posiciones
+            fin = null;
             // ambas operaciones son O(1), ya que solo son asignaciones
             // y siempre se ejecutaran solo esas 2.
         }
     }
 
     public TrieMaterias() {
-        this.raiz = new nodoMaterias(); 
+        this.raiz = new nodoMaterias();
         this.cantidadNodos = 0;
     }
 
@@ -65,9 +78,7 @@ public class TrieMaterias {
                 cantidadNodos++;
             }
         }
-
         nodoActual.fin = true;
-
         return nodoActual;
     }
 
@@ -87,65 +98,54 @@ public class TrieMaterias {
         return nodoActual;
     }
 
-    public void eliminar(String palabra){
-        
+    public void eliminar(String palabra) {
+
         nodoMaterias actual = this.buscarMateria(palabra);
-        // nodoMaterias actual = raiz;     
-        //     for (int i = 0; i < palabra.length(); i++){ 
-        //         char caracter   = palabra.charAt(i);    
-        //         int indice      = (int) caracter;
-        //         while(i != (palabra.length() -1)){  // i llega hasta el anteultimo y actualiza actual a el ultimo
-        //             actual = actual.hijos[indice];  
-        //           //actualiza para tener la instancia de carrera
-        //         }
-        //     }
-            Materia ladeAhora = actual.materia;
-            actual.materia = null;
+        actual.materia = null;
+        actual.fin = false;
+        cantMaterias--;
     }
 
     public int tamañoTrie() {
         return cantidadNodos;
     }
 
-    public class iteradorLexiDeMaterias {
-        private nodoMaterias _actual;
+    public String[] inOrderMaterias() {
+        String[] arrayMaterias = new String[cantidadNodos];
+        String[] res = new String[cantMaterias];
+        int[] indice = { 0 };
 
-        public iteradorLexiDeMaterias() {
-            nodoMaterias _actual;
-        }
+        StringBuilder materiaActual = new StringBuilder();
+        recorridoLexico(raiz, materiaActual, arrayMaterias, indice);
 
-        public boolean haySiguiente() {
-            return (_actual.hijos != null);
-        }
-
-        public Character siguiente() {
-            Character adevolver = _actual.valorActual;
-            int i = 0;
-            while (i < 256 && _actual.hijos[i] == null) {
-                // if(_actual.hijosmaterias.get(i) != null){
-                _actual = _actual.hijos[i];
-                // }
+        int indiceDeResultado = 0;
+        for (String carrera : arrayMaterias) {
+            if (carrera != null) {
+                res[indiceDeResultado++] = carrera;
             }
-            return adevolver;
         }
-        /*
-         * aca, si bien no es lo mas eficiente, ya que va a ser una constante grande (256
-         * iteraciones de operaciones O(1)), sigue siendo eficiente contra el nombre de
-         * carrera que va a ser algo lineal, y potencialmente mucho mas largo.
-         */
 
-        // public ArrayList<String> Inorder(NodoMaterias RaizdetrieActual){
-        // String palabra = "";
-        // ArrayList<String> res = new ArrayList<>();
-        // for(int i = 0;i < 256;i++){
-        // if(RaizdetrieActual.hijosmaterias.get(i) != null){
-        // Character char = RaizdetrieActual.hijosmaterias.get(i);
-        // palabra.concat(char);
-        // }
-        // //
-
-        // }
-
-        // }
+        return res;
     }
+
+    private void recorridoLexico(nodoMaterias nodoActual, StringBuilder materiaActual,
+            String[] arrayMaterias, int[] index) {
+
+        if (nodoActual == null) {
+            return;
+        }
+
+        if (nodoActual.materia != null) {
+            arrayMaterias[index[0]++] = materiaActual.toString();
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (nodoActual.hijos[i] != null) {
+                materiaActual.append((char) i);
+                recorridoLexico(nodoActual.hijos[i], materiaActual, arrayMaterias, index);
+                materiaActual.deleteCharAt(materiaActual.length() - 1);
+            }
+        }
+    }
+
 }

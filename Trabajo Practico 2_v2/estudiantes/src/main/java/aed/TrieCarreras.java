@@ -4,7 +4,7 @@ public class TrieCarreras {
 
     private nodoCarreras raiz;
     private int cantidadNodos;
-    private iteradorLexiDeCarreras iteradorDeCarreras;
+    public int cantidadDeCarreras = 0;
 
     // El invariante de representación de la clase nodoCarreras es que no existe
     // nodo tal que los atributos
@@ -65,6 +65,7 @@ public class TrieCarreras {
         if (nodoActual.materiasDeCarrera == null) { // Si termina la palabra y no hay un // trieMaterias asociado, lo
                                                     // genera un nuevo trie de materias vacío
             nodoActual.materiasDeCarrera = new TrieMaterias();
+            cantidadDeCarreras++;
         }
 
         return nodoActual;
@@ -90,29 +91,43 @@ public class TrieCarreras {
         return cantidadNodos;
     }
 
-    public class iteradorLexiDeCarreras {
-        private nodoCarreras _actual;
+    public String[] inOrderCarreras() {
+        String[] arrayCarreras = new String[cantidadNodos]; // Acá desperdiciamos un poco de espacio, pidiendo el array
+                                                            // con el tamaño máximo posible
+        String[] res = new String[cantidadDeCarreras];
+        int[] indice = { 0 }; // Array con un elemento para mantener el indice para añadir carreras
 
-        public iteradorLexiDeCarreras() {
-            nodoCarreras _actual = raiz;
-        }
+        StringBuilder carreraActual = new StringBuilder();
+        inOrder(raiz, carreraActual, arrayCarreras, indice);
 
-     public boolean haySiguiente() {
-     return (_actual.hijos != null);
-     }
-
-        public Character siguiente() {
-            Character adevolver = _actual.valorActual;
-            int i = 0;
-            while (i < 256 && _actual.hijos[i] == null) {
-                _actual = _actual.hijos[i];
+        // Copia los elementos != null de arrayCarreras al resultado
+        int resultadoDelIndice = 0;
+        for (String carrera : arrayCarreras) {
+            if (carrera != null) {
+                res[resultadoDelIndice++] = carrera;
             }
-            return adevolver;
         }
 
-        public iteradorLexiDeCarreras iterador(){
-            return new iteradorLexiDeCarreras();
+        return res;
+    }
+
+    private void inOrder(nodoCarreras nodoActual, StringBuilder carreraActual, String[] arrayCarreras,
+            int[] indice) {
+        if (nodoActual == null) {
+            return;
         }
-    
+
+        if (nodoActual.materiasDeCarrera != null) {
+            // Busco el fin de carrera, añade carreraActual a arrayCarreras
+            arrayCarreras[indice[0]++] = carreraActual.toString();
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (nodoActual.hijos[i] != null) {
+                carreraActual.append((char) i);
+                inOrder(nodoActual.hijos[i], carreraActual, arrayCarreras, indice);
+                carreraActual.deleteCharAt(carreraActual.length() - 1);
+            }
+        }
     }
 }
