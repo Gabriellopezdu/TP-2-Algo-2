@@ -1,14 +1,28 @@
 package aed;
 
+/*
+ * El invariante de representación de la clase TrieCarreras es que tendra un nodoCarreras raiz
+ * en el cual no tendra valor de Character definido, que respeta que los nodos que conforman el 
+ * trie cumplen el inv. de representacion de la clase nodoCarreras, que no habra mas de una 
+ * forma distintas de recorrer el trie para obtener la misma palabra, que el ultimo nodo de cada
+ * palabra (carrera) tendra un puntero la instancia de TrieMaterias correspondiente a esa carrera.
+ */
+
 public class TrieCarreras {
 
     private nodoCarreras raiz;
     private int cantidadNodos;
     public int cantidadDeCarreras = 0;
 
-    // El invariante de representación de la clase nodoCarreras es que no existe
-    // nodo tal que los atributos
-    // hijos y materiasDeCarrera sean null simultaneamente.
+    /*
+     * El invariante de representación de la clase nodoCarreras es que no existe nodo tal que
+     * los atributos hijos y materiasDeCarrera sean null simultaneamente, que el valor del
+     * nodo sera un Character y tendra como atributo un Array de 256 nodoCarreras en las que
+     * si no es null tendra su valor predefinido en el Ascii, y que si estamos en el nodo que
+     * representa el fin de la palabra este tendra el atributo fin en true y el atributo 
+     * materiasDeCarrera distinto de null apuntando a la instancia de TrieMaterias que 
+     * representa.
+     */
 
     public class nodoCarreras {
         nodoCarreras[] hijos;

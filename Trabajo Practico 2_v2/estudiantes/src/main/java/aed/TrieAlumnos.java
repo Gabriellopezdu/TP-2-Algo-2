@@ -5,7 +5,7 @@ package aed;
  * que cada rama del trie tendra una longitud de 5 elementos, por lo que el atributo fin solo
  * sera true en el quinto nodo de cada rama y el mismo quinto nodo tendra como atributo hijos
  * null, y que si el atributo fin es true representa que la palabra termina en ese punto, y 
- * que la raiz no tendra un caracater implicitamente definido. 
+ * que la raiz no tendra un caracter implicitamente definido. 
  */
 
 public class TrieAlumnos {
@@ -16,10 +16,10 @@ public class TrieAlumnos {
     /*
      * El invariante de representación de la clase nodoAlumnos es que los atributos hijos y fin
      * no pueden ser simultaneamente false y null respectivamente, que cada atributo hijos sera 
-     * un array de 256 elementos, y que el atributo cantidadMateriasInscripto 
+     * un array de 256 nodoMaterias, y que el atributo cantidadMateriasInscripto 
      * sera mayor o igual a 0. Tambien, el valor del caracter del nodo estara 
      * representada implicitamente en la posicion del array asociada al numero entero del 
-     * caracter en el codigo ASCII.
+     * caracter en el codigo Ascii.
      */
 
     public class nodoAlumnos {
