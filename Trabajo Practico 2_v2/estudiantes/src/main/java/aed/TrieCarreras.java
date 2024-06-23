@@ -92,23 +92,13 @@ public class TrieCarreras {
     }
 
     public String[] inOrderCarreras() {
-        String[] arrayCarreras = new String[cantidadNodos]; // Acá desperdiciamos un poco de espacio, pidiendo el array
-                                                            // con el tamaño máximo posible
-        String[] res = new String[cantidadDeCarreras];
+        String[] arrayCarreras = new String[cantidadDeCarreras]; 
         int[] indice = { 0 }; // Array con un elemento para mantener el indice para añadir carreras
 
         StringBuilder carreraActual = new StringBuilder();
         inOrder(raiz, carreraActual, arrayCarreras, indice);
 
-        // Copia los elementos != null de arrayCarreras al resultado
-        int resultadoDelIndice = 0;
-        for (String carrera : arrayCarreras) {
-            if (carrera != null) {
-                res[resultadoDelIndice++] = carrera;
-            }
-        }
-
-        return res;
+        return arrayCarreras;
     }
 
     private void inOrder(nodoCarreras nodoActual, StringBuilder carreraActual, String[] arrayCarreras,

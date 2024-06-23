@@ -4,7 +4,8 @@ package aed;
 // no tendra valor de Character definido, luego respeta que los nodos que conforman el trie cumplen
 // el inv. de representacion de la clase nodoMaterias. Luego no habra dos(o mas) formas distintas de 
 // recorrer el trie para obtener la misma palabra. 
-// 
+// Al final de cada palabra, el ultimo nodo tendra un atributo de clase Materia. 
+// Luego, el trie de materias siempre estara ligado a una carrera existente en el trie de carreras.  
 
 public class TrieMaterias {
 
@@ -78,11 +79,11 @@ public class TrieMaterias {
                 cantidadNodos++;
             }
         }
-        nodoActual.fin = true;
+        nodoActual.fin = true; 
         return nodoActual;
     }
 
-    // recibe el string a buscar y el trie de Materias
+    // recibe la materia a buscar y devolvera el ultimo nodo que apunta a la instancia de materia  
     public nodoMaterias buscarMateria(String palabra) {
 
         nodoMaterias nodoActual = raiz;
@@ -97,9 +98,8 @@ public class TrieMaterias {
         }
         return nodoActual;
     }
-
+    // recibe una materia(string), la busca en el trie y elimina la referencia al objeto materia del ultimo nodo 
     public void eliminar(String palabra) {
-
         nodoMaterias actual = this.buscarMateria(palabra);
         actual.materia = null;
         actual.fin = false;
@@ -109,40 +109,31 @@ public class TrieMaterias {
     public int tamañoTrie() {
         return cantidadNodos;
     }
-
+    // aqui manejamos los datos con los que llamamos a recorridoLexico, 
     public String[] inOrderMaterias() {
-        String[] arrayMaterias = new String[cantidadNodos];
-        String[] res = new String[cantMaterias];
-        int[] indice = { 0 };
+        String[] arrayMaterias = new String[cantMaterias]; //aca vamos a guardar las materias
+        int[] indice = { 0 }; //indice con el cual nos desplazaremos sobre arrayMaterias
 
-        StringBuilder materiaActual = new StringBuilder();
+        StringBuffer materiaActual = new StringBuffer();
         recorridoLexico(raiz, materiaActual, arrayMaterias, indice);
-
-        int indiceDeResultado = 0;
-        for (String carrera : arrayMaterias) {
-            if (carrera != null) {
-                res[indiceDeResultado++] = carrera;
-            }
-        }
-
-        return res;
+        return arrayMaterias;
     }
 
-    private void recorridoLexico(nodoMaterias nodoActual, StringBuilder materiaActual,
-            String[] arrayMaterias, int[] index) {
-
+    private void recorridoLexico(nodoMaterias nodoActual, StringBuffer materiaActual,
+            String[] arrayMaterias, int[] indice) {
+        //caso base no queda nada mas por explorar        
         if (nodoActual == null) {
             return;
         }
-
+        //detecta que llegamos al fin del nombre de una materia y la guarda en el arrayMaterias
         if (nodoActual.materia != null) {
-            arrayMaterias[index[0]++] = materiaActual.toString();
+            arrayMaterias[indice[0]++] = materiaActual.toString();
         }
-
+        //iteramos para encontrar el sig nodo no null en sus hijos
         for (int i = 0; i < 256; i++) {
             if (nodoActual.hijos[i] != null) {
-                materiaActual.append((char) i);
-                recorridoLexico(nodoActual.hijos[i], materiaActual, arrayMaterias, index);
+                materiaActual.append((char) i); //ponemos el char encontrado en la palabra que estamos armando
+                recorridoLexico(nodoActual.hijos[i], materiaActual, arrayMaterias, indice);//lamada recursiva  
                 materiaActual.deleteCharAt(materiaActual.length() - 1);
             }
         }
