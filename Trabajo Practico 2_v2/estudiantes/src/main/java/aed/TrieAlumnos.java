@@ -5,6 +5,15 @@ public class TrieAlumnos {
     private nodoAlumnos raiz;
     private int cantidadNodos;
 
+    /*
+     * El invariante de representación de la clase nodoAlumnos es que los atributos hijos y fin
+     * no pueden ser simultaneamente false y null respectivamente, que cada atributo hijos sera 
+     * un array de 256 elementos, que cada rama del trie tendra una longitud de 5 elementos, 
+     * por lo que el atributo fin solo sera true en el quinto nodo de cada rama y el mismo 
+     * quinto nodo tendra como atributo hijos null, y que el atributo cantidadMateriasInscripto 
+     * sera mayor o igual a 0.
+     */
+
     public class nodoAlumnos {
         private nodoAlumnos[] hijos;
         private boolean fin;
