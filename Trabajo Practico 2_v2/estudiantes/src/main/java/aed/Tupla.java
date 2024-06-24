@@ -1,8 +1,8 @@
 package aed;
 import aed.TrieCarreras.nodoCarreras;
 
-/* 
- * El invariante de representación de la clase Tupla es que tanto v1 como v2 no pueden ser 
+/* INVREP Tupla:
+ *  El invariante de representación de la clase Tupla es que tanto v1 como v2 no pueden ser 
  * null, y que v2 debe pertenecer al TrieMaterias asociado al atributo materiasDeCarrera
  * del nodoCarrera en v1.
  */

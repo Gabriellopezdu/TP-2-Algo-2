@@ -1,5 +1,12 @@
 package aed;
 
+/*GRUPO: parenLosAlgoritmos
+ * Integrantes                           LU:                            Mail
+ * Ballerio Francisco                  986/23                francisco.ballerio@hotmail.com
+ * Suarez, Francisco                   104/23                plottier2002@gmail.com
+ * Gabriel Lopez Duham                 615/23                Gabriellopezdu@gmail.com
+ * Vales, Benjamin Francisco           156/01                Benja.vales@gmail.com
+ */
 import aed.TrieCarreras.nodoCarreras;
 import aed.TrieMaterias.nodoMaterias;
 
@@ -14,6 +21,12 @@ public class SistemaSIU {
         JTP,
         PROF
     }
+
+    /* INVREP SIU:
+     *  Si y sólo si existe materia en carrera, el último nodo de carrera debe
+     * apuntar a un trieMaterias, la materia debe perte necer al trieMaterias,
+     * y en u último nodo, debe tener materia.
+     */
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias) {
 
@@ -68,16 +81,17 @@ public class SistemaSIU {
         for (int k = 0; k < libretasUniversitarias.length; k++) { // enchufamos en el trieAlumnos a todas las LU
             trieAlumnos.agregar(libretasUniversitarias[k]);
         }
-        // esto sera O(cantidad de estudiantes), pues al ser acotadas las LU
-        // todas las operaciones son O(1), y quedaria sumatoria{desde (k=1 hasta
-        // cantidad de LU) de O(1)}
+        /* esto sera O(cantidad de estudiantes), pues al ser acotadas las LU
+         * todas las operaciones son O(1), y quedaria sumatoria{desde (k=1 hasta
+         * cantidad de LU) de O(1)}
+         */
 
         /*
-         * finalmente la complejidad nos quedaria sumatoria{(desde i=1 hasta el largo de
-         * infoMaterias)
+         * Finalmente la complejidad nos quedaria
+         * sumatoria{(desde i=1 hasta el largo de infoMaterias)
          * de sumatoria{(j=1 hasta el largo de la lista paresCarreraMateria) de
          * O(largo carrera) + O(largo materia)}} +
-         * sumatoria{(desde k=1 hasta cantidad de LU) de O(1) }
+         * sumatoria{(desde k=1 hasta cantidad de LU) de O(1)}
          */
     }
 
@@ -126,9 +140,10 @@ public class SistemaSIU {
 
         return trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(materia).materia.profes();
 
-        // recorremos el nombre de la carrera y el de la materia, luego solamente
-        // devolvemos un atributo del objeto materia
-        // O(largo de carrera + largo de materia)
+        /*  Recorremos el nombre de la carrera y el de la materia, luego solamente
+         * devolvemos un atributo del objeto materia
+         * O(largo de carrera + largo de materia)
+         */
     }
 
     public void cerrarMateria(String materia, String carrera) {
@@ -152,11 +167,11 @@ public class SistemaSIU {
             carMat = carMat.siguiente;
             i++;
         }
-        // como t1() devuelve un puntero (mausquerramienta misteriosa) no recorremos la
-        // carrera denuevo
-        // solamente recorremos el nombre de la materia
-        // sumatoria{(desde i=1 hasta cantidadNombresMateria) de O(largo materia)}
-
+        /*  como t1() devuelve un puntero (mausquerramienta misteriosa) no recorremos la
+         * carrera denuevo
+         * solamente recorremos el nombre de la materia
+         * sumatoria{(desde i=1 hasta cantidadNombresMateria) de O(largo materia)}
+         */
         ListaEnlazada<String>.nodo nodoAlumno = materiaABorrar.inscriptos().primerNodo;
         int j = 0;
         // asignaciones O(1)
@@ -166,11 +181,12 @@ public class SistemaSIU {
             nodoAlumno = nodoAlumno.siguiente;
             j++;
         }
-        // por cada alumno inscripto a esa materia, en el trie le sacamos una materia
-        // como es trie acotado es O(1) por cada alumno inscripto
-
-        // entonces la complejidad queda O(largo carrera + largo materia) + O(largos de
-        // nombresMateria) + O(cant Inscriptos a materia)
+        /*  Por cada alumno inscripto a esa materia, en el trie le sacamos una materia
+         * como es trie acotado es O(1) por cada alumno inscripto
+         *
+         * entonces la complejidad queda O(largo carrera + largo materia) + O(largos de
+         * nombresMateria) + O(cant Inscriptos a materia)
+         */
     }
 
     public int inscriptos(String materia, String carrera) {
@@ -178,16 +194,17 @@ public class SistemaSIU {
         return trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(materia).materia
                 .inscriptos().tamaño;
 
-        // recorremos el nombre de la carrera y el de la materia, luego preguntamos el
-        // tamano de la lista enlazada que es un atributo de lista enlazada
-        // O(largo de carrera + largo de materia)
+        /*  Recorremos el nombre de la carrera y el de la materia, luego preguntamos el
+         * tamano de la lista enlazada que es un atributo de lista enlazada
+         * O(largo de carrera + largo de materia)
+         */
     }
 
     public boolean excedeCupo(String nombreMateria, String carrera) {
         Materia mat = trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.buscarMateria(nombreMateria).materia;
-        // buscamos el nodo de la carrera y luego el de la materia para llamar al objeto
-        // O(largo carrera + materia)
-
+        /* buscamos el nodo de la carrera y luego el de la materia para llamar al objeto
+         * O(largo carrera + materia)
+         */
         int cantProfes = mat.profes()[0];
         int cantJtps = mat.profes()[1];
         int cantAY1 = mat.profes()[2];
@@ -210,34 +227,38 @@ public class SistemaSIU {
             return true;
         }
         return false;
-        // el resto son todas asignaciones o comparaciones
-
-        // complejidad queda O(largo carrera + materia)
+        
+        /*  El resto son todas asignaciones o comparaciones
+         * complejidad queda O(largo carrera + materia)
+         */
     }
 
     public String[] carreras() {
         return trieDeCarreras.inOrderCarreras();
-        // recorremos el arbol, visitando cada nodo, osea recorriendo cada caracter de
-        // todas las carreras sin pasar 2 veces x el mismo
-        // entonces es lo mismo decir O(cant nodos) que O(cant caracteres sin repetir)
-        // osea es O(largo de cada nombre de carrera)
+        /* recorremos el arbol, visitando cada nodo, osea recorriendo cada caracter de
+         * todas las carreras sin pasar 2 veces x el mismo
+         * entonces es lo mismo decir O(cant nodos) que O(cant caracteres sin repetir)
+         * osea es O(largo de cada nombre de carrera)
+         */
     }
 
     public String[] materias(String carrera) {
         return trieDeCarreras.buscarCarrera(carrera).materiasDeCarrera.inOrderMaterias();
 
-        // es lo mismo que con carreras, solo que cambiamos
-        // los nombres de las carreras por los nombres de las materias de la carrera
-        // y sumamos el largo de la carrera, pues la recorrermos para acceder al trie
-
-        // osea que quedaria O(largo carrera) + O(nombres de las materias)
+        /*  Es lo mismo que con carreras, solo que cambiamos
+         * los nombres de las carreras por los nombres de las materias de la carrera
+         * y sumamos el largo de la carrera, pues la recorrermos para acceder al trie
+         *
+         * osea que quedaria O(largo carrera) + O(nombres de las materias)
+         */
     }
 
     public int materiasInscriptas(String estudiante) {
         return trieAlumnos.buscarAlumno(estudiante).cantidadMateriasInscripto;
 
-        // como el trieAlumnos tiene sus elementos acotados, toda operacion es
-        // O(1)
+        /*  como el trieAlumnos tiene sus elementos acotados, toda operacion es
+         * O(1)
+         */
     }
 
 }

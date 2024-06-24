@@ -1,11 +1,12 @@
 package aed;
 
-/*
- * El invariante de representación es que no habra mas de una manera de recorrer una palabra, 
+/* INVREP TrieAlumnos:
+ *  El invariante de representación es que no habra mas de una manera de recorrer una palabra, 
  * que si el atributo fin es true representa que la palabra termina en ese punto, que cada rama
  * del trie tendra una longitud de 5 elementos, por lo que el atributo fin solo sera true en el
  * quinto nodo de cada rama y el mismo quinto nodo tendra como atributo hijos null, y 
- * que la raiz no tendra caracteres implicitamente definidos. 
+ * que la raiz no tendra caracteres implicitamente definidos. Por otro lado, el atributo 
+ * cantidadNodos debe ser mayor o igual a 0.
  */
 
 public class TrieAlumnos {
@@ -13,8 +14,8 @@ public class TrieAlumnos {
     private nodoAlumnos raiz;
     private int cantidadNodos;
 
-    /*
-     * El invariante de representación de la clase nodoAlumnos es que los atributos hijos y fin
+    /* INVREP nodoAlumnos:
+     *  El invariante de representación de la clase nodoAlumnos es que los atributos hijos y fin
      * no pueden ser simultaneamente false y null respectivamente, que cada atributo hijos sera 
      * un array de 256 nodoAlumnos, y que el atributo cantidadMateriasInscripto 
      * sera mayor o igual a 0. Tambien, el valor del caracter del nodo estara 

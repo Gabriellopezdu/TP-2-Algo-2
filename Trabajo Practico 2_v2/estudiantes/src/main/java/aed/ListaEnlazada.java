@@ -1,8 +1,8 @@
 package aed;
 
-/*  
- * El invariante de representación es que el primer nodo y el ultimo nodo son null si y solo si no hay elementos en la lista
- * El tamaño es equivalente a la cantidad de nodos que tiene la lista
+/* INVREP listaEnlazada:
+ *  El invariante de representación es que el primer nodo y el ultimo nodo son null si y solo si no hay elementos en la lista
+ * El tamaño es equivalente a la cantidad de nodos que tiene la lista, que no puede ser menor a 0
  * Si la lista tiene un solo elemento, éste es el primerNodo y el último nodo
  * Si hacemos primerNodo.siguiente (tamaño-1) veces, llegaremos al último nodo
  */

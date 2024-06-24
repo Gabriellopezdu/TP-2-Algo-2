@@ -2,8 +2,8 @@ package aed;
 
 import aed.TrieCarreras.*;
 
-/* 
- * El invariante de representación de la clase Materia es que los valores de cada posicion 
+/* INVREP Materia:
+ *  El invariante de representación de la clase Materia es que los valores de cada posicion 
  * del atributo profes seran mayores o iguales a 0, que o bien infoMateria es una lista enlazada
  * vacia, o bien el v1 de cada tupla dentro de la lista enlazada del atributo infoMateria
  * apuntara al ultimo nodo de Carreras que corresponda al nombre de la materia en esa carrera 

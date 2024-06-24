@@ -1,11 +1,14 @@
 package aed;
 
-// El inv. de representacion de la clase TrieMaterias es que tendra un nodoMaterias raiz en el cual
-// no tendra valor de Character definido, luego respeta que los nodos que conforman el trie cumplen
-// el inv. de representacion de la clase nodoMaterias. Luego no habra dos(o mas) formas distintas de 
-// recorrer el trie para obtener la misma palabra. 
-// Al final de cada palabra, el ultimo nodo tendra un atributo de clase Materia. 
-// Luego, el trie de materias siempre estara ligado a una carrera existente en el trie de carreras.  
+/* INVREP TrieMaterias:
+ *  El inv. de representacion de la clase TrieMaterias es que tendra un nodoMaterias raiz en el cual
+ * no tendra valor de Character definido, luego respeta que los nodos que conforman el trie cumplen
+ * el inv. de representacion de la clase nodoMaterias. Luego no habra dos(o mas) formas distintas de 
+ * recorrer el trie para obtener la misma palabra. 
+ * Al final de cada palabra, el ultimo nodo tendra un atributo de clase Materia. 
+ * Luego, el trie de materias siempre estara ligado a una carrera existente en el trie de carreras.
+ * Por otro lado, tanto el atributo cantMaterias como cantidadNodos debe ser mayor o igual a 0.
+ */
 
 public class TrieMaterias {
 
@@ -13,15 +16,17 @@ public class TrieMaterias {
     private int cantidadNodos;
     public int cantMaterias = 0;
 
-    // El inv. de representación de la clase nodoMaterias es que, si no es la raiz
-    // el valor del
-    // nodo sera un Character y tendra como atributo un Array de 256 nodoMaterias en
-    // las que, si no es
-    // null tendra su valor predefinido en el Ascii. Luego, si estamos en el nodo
-    // que representa el fin
-    // de la palabra este tendra el atributo fin en true y el atributo materia
-    // distinto de null
-    // apuntando a la instancia de materia que representa.
+    /* INVREP nodoMaterias:
+     *  El inv. de representación de la clase nodoMaterias es que, si no es la raiz
+     * el valor del
+     * nodo sera un Character y tendra como atributo un Array de 256 nodoMaterias en
+     * las que, si no es
+     * null tendra su valor predefinido en el Ascii. Luego, si estamos en el nodo
+     * que representa el fin
+     * de la palabra este tendra el atributo fin en true y el atributo materia
+     * distinto de null
+     * apuntando a la instancia de materia que representa.
+     */
 
     public class nodoMaterias {
         nodoMaterias[] hijos;
@@ -133,7 +138,7 @@ public class TrieMaterias {
         for (int i = 0; i < 256; i++) {
             if (nodoActual.hijos[i] != null) {
                 materiaActual.append((char) i); //ponemos el char encontrado en la palabra que estamos armando
-                recorridoLexico(nodoActual.hijos[i], materiaActual, arrayMaterias, indice);//lamada recursiva  
+                recorridoLexico(nodoActual.hijos[i], materiaActual, arrayMaterias, indice);//llamada recursiva  
                 materiaActual.deleteCharAt(materiaActual.length() - 1);
             }
         }

@@ -1,11 +1,13 @@
 package aed;
 
-/*
- * El invariante de representación de la clase TrieCarreras es que tendra un nodoCarreras raiz
+/* INVREP TrieCarreras:
+ *  El invariante de representación de la clase TrieCarreras es que tendra un nodoCarreras raiz
  * en el cual no tendra valor de Character definido, que respeta que los nodos que conforman el 
  * trie cumplen el inv. de representacion de la clase nodoCarreras, que no habra mas de una 
  * forma distintas de recorrer el trie para obtener la misma palabra, que el ultimo nodo de cada
  * palabra (carrera) tendra un puntero la instancia de TrieMaterias correspondiente a esa carrera.
+ * Por otro lado, tanto el atributo candidadDeCarreras como cantidadNodos debe ser mayor a o
+ * igual a 0.
  */
 
 public class TrieCarreras {
@@ -15,12 +17,13 @@ public class TrieCarreras {
     public int cantidadDeCarreras = 0;
 
     /*
-     * El invariante de representación de la clase nodoCarreras es que no existe nodo tal que
+     * INVREP nodoCarreras:
+     *  El invariante de representación de la clase nodoCarreras es que no existe nodo tal que
      * los atributos hijos y materiasDeCarrera sean null simultaneamente, que el valor del
      * nodo sera un Character y tendra como atributo un Array de 256 nodoCarreras en las que
      * si no es null tendra su valor predefinido en el Ascii, y que si estamos en el nodo que
-     * representa el fin de la palabra este tendra el atributo fin en true y el atributo 
-     * materiasDeCarrera distinto de null apuntando a la instancia de TrieMaterias que 
+     * representa el fin de la palabra este tendra el atributo fin en true y el atributo
+     * materiasDeCarrera distinto de null apuntando a la instancia de TrieMaterias que
      * representa.
      */
 
@@ -106,16 +109,16 @@ public class TrieCarreras {
     }
 
     public String[] inOrderCarreras() {
-        String[] arrayCarreras = new String[cantidadDeCarreras]; 
+        String[] arrayCarreras = new String[cantidadDeCarreras];
         int[] indice = { 0 }; // Array con un elemento para mantener el indice para añadir carreras
 
-        StringBuilder carreraActual = new StringBuilder();
+        StringBuffer carreraActual = new StringBuffer();
         inOrder(raiz, carreraActual, arrayCarreras, indice);
 
         return arrayCarreras;
     }
 
-    private void inOrder(nodoCarreras nodoActual, StringBuilder carreraActual, String[] arrayCarreras,
+    private void inOrder(nodoCarreras nodoActual, StringBuffer carreraActual, String[] arrayCarreras,
             int[] indice) {
         if (nodoActual == null) {
             return;
